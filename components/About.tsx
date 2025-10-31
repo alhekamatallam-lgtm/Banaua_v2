@@ -1,25 +1,83 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const About: React.FC = () => {
+interface AboutProps {
+  aboutData: {
+    'عن بنايا هورايزون': string;
+    'رؤيتنا': string;
+    'رسالتنا': string;
+  };
+}
+
+const About: React.FC<AboutProps> = ({ aboutData }) => {
+  const cardVariants = {
+    offscreen: {
+      y: 50,
+      opacity: 0,
+    },
+    onscreen: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        bounce: 0.4,
+        duration: 0.8,
+      },
+    },
+  };
+
   return (
-    <section id="about" className="py-20 md:py-32 bg-white">
-      <div className="container mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
-            عن <span className="text-[#9A6641]">بنايا الأفق</span>
-          </h2>
-          <div className="w-24 h-1 bg-[#642C32] mx-auto mb-8"></div>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 leading-relaxed">
-            بنايا الأفق هي شركة سعودية متخصصة في تقديم حلول متكاملة في مجالات التصميم المعماري والداخلي، وتنفيذ المشاريع بأعلى معايير الجودة والإتقان. نسعى لتحقيق تطلعات عملائنا من خلال إبداعات تجمع بين الأصالة والمعاصرة.
-          </p>
-        </motion.div>
+    <section id="about" className="py-20 md:py-32 bg-[#F9F7F5] overflow-hidden">
+      <div className="container mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Vision & Mission Cards */}
+          <div className="space-y-8 order-2 md:order-1">
+            <motion.div
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true, amount: 0.5 }}
+              variants={cardVariants}
+              whileHover={{ scale: 1.03, boxShadow: '0px 15px 30px -10px rgba(0,0,0,0.1)' }}
+              className="bg-white p-8 rounded-lg shadow-lg border border-gray-100"
+            >
+              <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رؤيتنا</h3>
+              <p className="text-gray-600 leading-relaxed">
+                {aboutData['رؤيتنا']}
+              </p>
+            </motion.div>
+            <motion.div
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true, amount: 0.5 }}
+              variants={cardVariants}
+              transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.03, boxShadow: '0px 15px 30px -10px rgba(0,0,0,0.1)' }}
+              className="bg-white p-8 rounded-lg shadow-lg border border-gray-100"
+            >
+              <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رسالتنا</h3>
+              <p className="text-gray-600 leading-relaxed">
+                {aboutData['رسالتنا']}
+              </p>
+            </motion.div>
+          </div>
+          
+          {/* About Company Text */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="order-1 md:order-2 text-right"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
+              عن <span className="text-[#9A6641]">بنايا الأفق</span>
+            </h2>
+            <div className="w-24 h-1 bg-[#642C32] mb-8 ml-auto"></div>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              {aboutData['عن بنايا هورايزون']}
+            </p>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
