@@ -32,10 +32,8 @@ const InstagramIcon = () => (
 );
 
 const TiktokIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 4h-4a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h4V4z"></path>
-        <path d="M12 19V9"></path>
-        <path d="M16 19v-4a4 4 0 0 0-4-4h-4"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.66 2.83 2.85 2.85 0 0 1-2.94-2.85 2.86 2.86 0 0 1 2.84-2.88c.1 0 .19.01.28.02V10.1a6.3 6.3 0 0 0-3.37.95 6.44 6.44 0 0 0-3.3 5.8 6.49 6.49 0 0 0 6.51 6.49 6.47 6.47 0 0 0 6.36-5.62V6.69h3.38V2h-3.38v4.69z"></path>
     </svg>
 );
 
@@ -166,7 +164,7 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={`Follow us on ${social.name}`}
-                                    className="text-gray-500 hover:text-[#9A6641] transition-transform duration-300 hover:scale-110"
+                                    className="text-[#9A6641] hover:text-[#642C32] transition-all duration-300 ease-in-out hover:scale-110"
                                 >
                                     {social.icon}
                                 </a>

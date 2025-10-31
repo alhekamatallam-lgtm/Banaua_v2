@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
@@ -106,10 +107,6 @@ const App: React.FC = () => {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
   if (error) {
     return <div className="h-screen w-full flex items-center justify-center bg-[#F9F7F5] text-red-500 text-xl">حدث خطأ: {error}</div>;
   }
@@ -118,19 +115,27 @@ const App: React.FC = () => {
 
 
   return (
-    <div className="bg-[#F9F7F5] text-[#1A1A1A] antialiased">
-      <Header logoUrl={data?.logo[0]?.logo} />
-      <main>
-        <Hero heroData={optimizedHeroData} />
-        {data?.Banaua && <Projects slides={data.Banaua} />}
-        {data?.about && data?.logo && <About aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
-        {data?.about && data?.logo && <VisionMission aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
-        <Fields />
-        <Advantages />
-        {data?.contact && <Contact contactData={data.contact[0]} />}
-      </main>
-      <Footer logoUrl={data?.logo[0]?.logo} />
-    </div>
+    <>
+      <AnimatePresence>
+        {loading && <LoadingSpinner />}
+      </AnimatePresence>
+
+      {data && (
+        <div className="bg-[#F9F7F5] text-[#1A1A1A] antialiased">
+          <Header logoUrl={data.logo[0]?.logo} />
+          <main>
+            <Hero heroData={optimizedHeroData} />
+            {data.Banaua && <Projects slides={data.Banaua} />}
+            {data.about && data.logo && <About aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
+            {data.about && data.logo && <VisionMission aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
+            <Fields />
+            <Advantages />
+            {data.contact && <Contact contactData={data.contact[0]} />}
+          </main>
+          <Footer logoUrl={data.logo[0]?.logo} />
+        </div>
+      )}
+    </>
   );
 };
 
