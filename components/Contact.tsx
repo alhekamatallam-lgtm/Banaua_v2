@@ -1,17 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-// SVG Icons as React Components (20x20px)
-const LocationIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-const PhoneIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>;
-const MailIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
-const InstagramIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
-const TiktokIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.999a2 2 0 012 2v8a2 2 0 11-4 0V7.5a.5.5 0 00-1 0V13a6 6 0 106-6h-2a4 4 0 11-4 4V4.999a2 2 0 012-2z"/></svg>;
-const XIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>;
-const SnapchatIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5 0 2.5 1 4.75 2.5 6.5-1 1-2.5 2-2.5 2s2-1 3-2.5c1.75 1.5 4 2.5 6.5 2.5 5.25 0 9.5-4.25 9.5-9.5S17.25 2.5 12 2.5z"></path></svg>;
+// --- SVG Icons ---
 
-interface ContactProps {
-  contactData: {
+const PhoneIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+);
+
+const MailIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+    </svg>
+);
+
+const MapPinIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+        <circle cx="12" cy="10" r="3"></circle>
+    </svg>
+);
+
+const InstagramIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+    </svg>
+);
+
+const TiktokIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 4h-4a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h4V4z"></path>
+        <path d="M12 19V9"></path>
+        <path d="M16 19v-4a4 4 0 0 0-4-4h-4"></path>
+    </svg>
+);
+
+
+const XIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+    </svg>
+);
+
+const SnapchatIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M11.9,2.2c-0.2,0-0.5,0-0.7,0.1C6.1,2.8,2.7,6.6,2.2,11.7c-0.1,0.9,0,1.9,0.2,2.8c0.2,0.7,0.5,1.4,0.9,2 c0.5,0.8,2.2,2.7,2.2,2.7c-0.1-0.1,0.5,0.4,0.5,0.4c0.1,0.1,0.2,0.2,0.3,0.2c0,0,0.1,0,0.1,0h4.8c0,0,0.1,0,0.1,0 c0.1,0,0.2-0.1,0.3-0.2c0,0,0.6-0.5,0.5-0.4c0,0,1.7-1.9,2.2-2.7c0.4-0.6,0.7-1.3,0.9-2c0.2-0.9,0.3-1.9,0.2-2.8 C21.1,6.5,17.2,2.5,11.9,2.2z M8.8,11.6c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5S9.6,11.6,8.8,11.6z M15,11.6 c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5S15.8,11.6,15,11.6z"/>
+    </svg>
+);
+
+interface ContactData {
     address: string;
     phone1: string;
     phone2: string;
@@ -20,154 +62,121 @@ interface ContactProps {
     tiktok: string;
     x: string;
     snapchat: string;
-  };
+}
+
+interface ContactProps {
+    contactData: ContactData;
 }
 
 const Contact: React.FC<ContactProps> = ({ contactData }) => {
-  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+    const contactItems = [
+        {
+            icon: <PhoneIcon />,
+            title: "اتصل بنا",
+            content: (
+                <>
+                    <a href={`tel:${contactData.phone1}`} className="block hover:text-[#9A6641] transition-colors">{contactData.phone1}</a>
+                    {contactData.phone2 && <a href={`tel:${contactData.phone2}`} className="block hover:text-[#9A6641] transition-colors mt-1">{contactData.phone2}</a>}
+                </>
+            ),
+            aria: "Phone numbers",
+        },
+        {
+            icon: <MailIcon />,
+            title: "راسلنا",
+            content: <a href={`mailto:${contactData.email}`} className="hover:text-[#9A6641] transition-colors">{contactData.email}</a>,
+            aria: "Email address",
+        },
+        {
+            icon: <MapPinIcon />,
+            title: "موقعنا",
+            content: <p>{contactData.address}</p>,
+            aria: "Our address",
+        },
+    ];
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmissionStatus('submitting');
-    const form = event.currentTarget;
-    const data = new FormData(form);
+    const socialLinks = [
+        { icon: <InstagramIcon />, href: contactData.instagram, name: "Instagram" },
+        { icon: <TiktokIcon />, href: contactData.tiktok, name: "TikTok" },
+        { icon: <XIcon />, href: contactData.x, name: "X" },
+        { icon: <SnapchatIcon />, href: contactData.snapchat, name: "Snapchat" },
+    ].filter(link => link.href && link.href.trim() !== '');
 
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      if (response.ok) {
-        setSubmissionStatus('success');
-        form.reset();
-      } else {
-        setSubmissionStatus('error');
-      }
-    } catch (error) {
-      setSubmissionStatus('error');
-    }
-  };
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+        },
+    };
 
-  return (
-    <motion.section
-      id="contact"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: "easeInOut" }}
-      viewport={{ once: true }}
-      className="py-20 bg-[#F9F7F5] overflow-hidden"
-    >
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
-          <h2 className="section-intro-heading">
-            تواصل معنا
-          </h2>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-x-20 gap-y-16 items-start">
-            {/* Left Column on Desktop, Top on Mobile: Form */}
-            <div className="bg-white p-8 sm:p-10 rounded-lg shadow-xl border border-gray-100 order-1 md:order-2 max-w-lg mx-auto w-full">
-                {submissionStatus === 'success' ? (
-                  <div className="text-center p-8 h-full flex flex-col justify-center items-center">
-                    <h3 className="mb-4">تم الإرسال بنجاح!</h3>
-                    <p>شكرًا لتواصلك معنا. سنقوم بالرد عليك في أقرب وقت ممكن.</p>
-                  </div>
-                ) : (
-                  <form 
-                    action="https://formspree.io/f/YOUR_FORM_ID_HERE" // Replace with your Formspree form ID
-                    method="POST"
-                    onSubmit={handleSubmit} 
-                    className="space-y-6 text-right"
-                  >
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-[#642C32] mb-2">الاسم</label>
-                        <input type="text" name="name" id="name" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-[#642C32] mb-2">البريد الإلكتروني</label>
-                        <input type="email" name="email" id="email" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
-                    </div>
-                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-[#642C32] mb-2">رقم الجوال</label>
-                        <input type="tel" name="phone" id="phone" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
-                    </div>
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-[#642C32] mb-2">الرسالة</label>
-                        <textarea name="message" id="message" rows={5} required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200 resize-none"></textarea>
-                    </div>
-                    <div>
-                        <button type="submit" disabled={submissionStatus === 'submitting'} className="w-full py-3 px-6 bg-[#9A6641] text-white font-bold rounded-xl hover:bg-[#642C32] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9A6641] text-lg disabled:bg-gray-400">
-                           {submissionStatus === 'submitting' ? '...جاري الإرسال' : 'إرسال الرسالة'}
-                        </button>
-                    </div>
-                    {submissionStatus === 'error' && <p className="text-red-500 text-sm mt-2">حدث خطأ ما. يرجى المحاولة مرة أخرى.</p>}
-                  </form>
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+    };
+
+    return (
+        <motion.section
+            id="contact"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="bg-[#F9F7F5] py-20 md:py-24"
+        >
+            <div className="container mx-auto px-6">
+                <motion.div variants={itemVariants} className="text-center mb-16">
+                    <h2 className="section-intro-heading text-4xl md:text-5xl text-[#642C32]">
+                        تواصل معنا
+                    </h2>
+                    <p className="mt-4 text-xl text-gray-700 max-w-2xl mx-auto">
+                        نحن هنا لتحويل أفكارك إلى واقع. تواصل معنا لبدء مشروعك القادم.
+                    </p>
+                </motion.div>
+
+                <motion.div
+                    variants={containerVariants}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-center"
+                >
+                    {contactItems.map((item, index) => (
+                        <motion.div
+                            key={index}
+                            variants={itemVariants}
+                            className="bg-white p-8 rounded-2xl"
+                        >
+                            <div className="flex justify-center text-[#642C32] mb-4">
+                                {item.icon}
+                            </div>
+                            <h3 className="text-2xl font-bold text-[#1A1A1A] mb-2">{item.title}</h3>
+                            <div className="text-lg text-gray-700 font-medium" aria-label={item.aria}>
+                                {item.content}
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
+
+                {socialLinks.length > 0 && (
+                    <motion.div variants={itemVariants} className="mt-20 text-center">
+                        <h3 className="text-2xl font-semibold mb-6 text-gray-800">تابعنا على شبكات التواصل</h3>
+                        <div className="flex justify-center items-center gap-x-6">
+                            {socialLinks.map((social) => (
+                                <a
+                                    key={social.name}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`Follow us on ${social.name}`}
+                                    className="text-gray-500 hover:text-[#9A6641] transition-transform duration-300 hover:scale-110"
+                                >
+                                    {social.icon}
+                                </a>
+                            ))}
+                        </div>
+                    </motion.div>
                 )}
             </div>
-
-            {/* Right Column on Desktop, Bottom on Mobile: Info */}
-            <div className="space-y-12 order-2 md:order-1">
-                <div className="space-y-8 text-right">
-                    {/* Address */}
-                    <div className="flex justify-start items-start gap-5">
-                        <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><LocationIcon /></div>
-                        <div className="text-right">
-                            <h4 className="mb-1">العنوان</h4>
-                            {(() => {
-                                const address = contactData.address;
-                                if (!address) return <p className="mt-1">...</p>;
-                                
-                                const parts = address.split('–');
-                                if (parts.length >= 3) {
-                                    const line1 = `${parts[0].trim()} – ${parts[1].trim()} –`;
-                                    const line2 = parts.slice(2).join('–').trim();
-                                    return (
-                                        <div className="mt-1">
-                                            <p>{line1}</p>
-                                            <p>{line2}</p>
-                                        </div>
-                                    );
-                                }
-                                return <p className="mt-1">{address}</p>;
-                            })()}
-                        </div>
-                    </div>
-                    {/* Phone */}
-                    <div className="flex justify-start items-start gap-5">
-                        <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><PhoneIcon /></div>
-                        <div className="text-right">
-                           <h4 className="mb-1">الهاتف</h4>
-                           <p className="mt-1" dir="ltr">{contactData.phone1} / {contactData.phone2}</p>
-                        </div>
-                    </div>
-                    {/* Email */}
-                    <div className="flex justify-start items-start gap-5">
-                         <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><MailIcon /></div>
-                        <div className="text-right">
-                           <h4 className="mb-1">البريد الإلكتروني</h4>
-                           <a href={`mailto:${contactData.email}`} className="mt-1 hover:text-[#642C32]">{contactData.email}</a>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Social Links */}
-                <div className="text-right">
-                   <h4 className="mb-4">تابعنا على</h4>
-                   <div className="flex justify-start gap-4">
-                       <a href={contactData.instagram} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><InstagramIcon /></a>
-                       <a href={contactData.tiktok} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><TiktokIcon /></a>
-                       <a href={contactData.x} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><XIcon /></a>
-                       <a href={contactData.snapchat} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><SnapchatIcon /></a>
-                   </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    </motion.section>
-  );
+        </motion.section>
+    );
 };
 
 export default Contact;

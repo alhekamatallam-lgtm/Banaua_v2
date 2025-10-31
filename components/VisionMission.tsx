@@ -56,7 +56,7 @@ const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => 
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.3 }}
-      className="pb-20 md:pb-32 bg-[#F9F7F5] relative overflow-hidden"
+      className="pt-8 md:pt-12 pb-20 md:pb-32 bg-[#F9F7F5] relative overflow-hidden"
     >
       <div className="container mx-auto px-6">
         <div className="relative grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-x-12 items-stretch max-w-6xl mx-auto">

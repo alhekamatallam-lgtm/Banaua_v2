@@ -36,12 +36,12 @@ const Fields: React.FC = () => {
                     {[...fieldsData, ...fieldsData].map((item, index) => (
                         <div
                             key={index}
-                            className="flex-shrink-0 w-[380px] bg-white p-8 rounded-2xl text-right transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border border-gray-100"
+                            className="flex-shrink-0 w-[380px] bg-white p-8 rounded-2xl text-right transition-all duration-400 ease-in-out hover:shadow-xl hover:scale-105 border border-gray-100"
                         >
                             <div className="mb-5 text-[#642C32]">
                                 {item.icon}
                             </div>
-                            <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-3">
+                            <h3 className="text-2xl font-bold text-[#1A1A1A] mb-3">
                                 {item.title}
                             </h3>
                             <p className="text-lg font-light leading-relaxed text-gray-700">

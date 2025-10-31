@@ -42,7 +42,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           alt="Modern Architecture"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/15"></div>
       </motion.div>
 
       <motion.div
@@ -52,7 +52,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.3, ease: 'easeInOut' }}
+          transition={{ duration: 0.6, delay: 0.3, ease: 'easeInOut' }}
           className="text-white text-4xl md:text-6xl lg:text-7xl"
           style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
         >

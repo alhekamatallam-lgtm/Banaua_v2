@@ -41,7 +41,7 @@ const Advantages: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="py-20 md:py-24 bg-white" // Use a slightly different background for contrast
+      className="py-20 md:py-24 bg-[#F9F7F5]" // Use a slightly different background for contrast
     >
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
@@ -57,7 +57,7 @@ const Advantages: React.FC = () => {
             <motion.div
               key={index}
               variants={cardVariants}
-              className="bg-[#F9F7F5] p-8 rounded-2xl text-right transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-transparent hover:border-[#9A6641]/30"
+              className="bg-white p-8 rounded-2xl text-right transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-transparent hover:border-[#9A6641]/30"
             >
               <div className="mb-5 text-[#9A6641]">
                 {item.icon}

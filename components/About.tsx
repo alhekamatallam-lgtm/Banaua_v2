@@ -65,14 +65,14 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: 'easeInOut' }}
       viewport={{ once: true }}
-      className="py-20 md:py-32 bg-[#F9F7F5] overflow-hidden"
+      className="pt-20 md:pt-32 bg-[#F9F7F5] overflow-hidden"
     >
       <div className="container mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto">
              <h2 className="section-intro-heading text-4xl md:text-5xl">
               {renderProfessionalTitle()}
             </h2>
-            <p className="readable-text mx-auto text-xl leading-relaxed text-justify">
+            <p className="readable-text mx-auto text-xl font-medium leading-relaxed text-right">
               {renderContentWithLogo(aboutData?.about_content || '...جاري تحميل المحتوى')}
             </p>
         </div>
