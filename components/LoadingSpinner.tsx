@@ -12,11 +12,19 @@ const LoadingSpinner: React.FC = () => {
       aria-live="polite"
       aria-busy="true"
     >
-      <img
+      <motion.img
         src="https://i.ibb.co/fYCg9Lh8/3.png"
         alt="Banaya Horizon Logo - Loading"
         className="h-[100px] w-auto"
         aria-label="Loading..."
+        animate={{
+          scale: [1, 1.05, 1],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+        }}
       />
     </motion.div>
   );
