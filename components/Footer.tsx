@@ -24,7 +24,7 @@ const Footer: React.FC<FooterProps> = ({ logoUrl }) => {
             <img 
               src={logoUrl} 
               alt="شعار بنايا هورايزون" 
-              className="h-6" // Slightly increased logo size
+              className="h-7 cursor-pointer filter brightness-0 invert transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-[0_0_8px_#9A6641]"
             />
           ) : (
             <span>بنايا هورايزون</span>
