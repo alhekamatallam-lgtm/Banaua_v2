@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
 import About from './components/About';
+import VisionMission from './components/VisionMission'; // Import the new component
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -88,6 +89,8 @@ const App: React.FC = () => {
         <Hero heroData={data?.Banaua[0]} />
         {data?.Banaua && <Projects slides={data.Banaua} />}
         {data?.about && <About aboutData={data.about[0]} />}
+        {/* Add the new VisionMission section */}
+        {data?.about && data?.logo && <VisionMission aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
         {data?.contact && <Contact contactData={data.contact[0]} />}
       </main>
       <Footer />

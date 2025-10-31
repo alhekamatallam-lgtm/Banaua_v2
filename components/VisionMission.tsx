@@ -1,55 +1,90 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const VisionMission: React.FC = () => {
+interface VisionMissionProps {
+  aboutData: {
+    'رؤيتنا': string;
+    'رسالتنا': string;
+  };
+  logoUrl?: string;
+}
+
+const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => {
+  
+  // Helper function to replace "بنايا" with the logo
+  const renderTextWithLogo = (text: string) => {
+    if (!text || !logoUrl || !text.includes('بنايا')) {
+      return text;
+    }
+    
+    const parts = text.split('بنايا');
+    return (
+      <>
+        {parts.map((part, index) => (
+          <React.Fragment key={index}>
+            {part}
+            {index < parts.length - 1 && (
+              <img 
+                src={logoUrl} 
+                alt="شعار بنايا" 
+                className="inline-block h-7 w-auto mx-1 align-middle -mt-1" 
+              />
+            )}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  };
+
   const cardVariants = {
-    offscreen: {
-      y: 100,
-      opacity: 0,
-    },
+    offscreen: { opacity: 0, y: 40 },
     onscreen: {
-      y: 0,
       opacity: 1,
+      y: 0,
       transition: {
-        type: "spring",
-        bounce: 0.4,
         duration: 0.8,
+        ease: 'easeInOut',
       },
     },
   };
 
   return (
-    <section id="vision-mission" className="py-20 md:py-32 bg-[#F9F7F5]">
+    <motion.section
+      id="vision-mission"
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: true, amount: 0.3 }}
+      className="pb-20 md:pb-32 bg-[#F9F7F5] relative overflow-hidden"
+    >
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12">
-          <motion.div
-            initial="offscreen"
-            whileInView="onscreen"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={cardVariants}
-            className="bg-white p-8 rounded-lg shadow-lg"
-          >
-            <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رؤيتنا</h3>
-            <p className="text-gray-600 leading-relaxed">
-              أن نكون الخيار الأول في عالم التصميم والبناء في المملكة، من خلال تقديم تصاميم مبتكرة ومستدامة تترك بصمة إيجابية في حياة الناس والمجتمع.
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-y-8 md:gap-x-12 items-stretch max-w-6xl mx-auto">
+          {/* Vision Card (Right) */}
+          <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-sm p-8 lg:p-10 rounded-2xl shadow-lg border border-white/20 text-right">
+            <h3 className="text-3xl font-bold text-[#642C32] mb-4">
+              رؤيتنا
+            </h3>
+            <p className="text-xl leading-relaxed">
+              {renderTextWithLogo(aboutData['رؤيتنا'])}
             </p>
           </motion.div>
-          <motion.div
-            initial="offscreen"
-            whileInView="onscreen"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={cardVariants}
-            className="bg-white p-8 rounded-lg shadow-lg"
-          >
-            <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رسالتنا</h3>
-            <p className="text-gray-600 leading-relaxed">
-              الالتزام بتحويل أفكار عملائنا إلى حقيقة ملموسة عبر تصاميم فريدة وتنفيذ دقيق، مع التركيز على الجودة، والابتكار، ورضا العميل في كل خطوة من خطوات المشروع.
+          
+          {/* Divider */}
+          <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-3/5 w-0.5 bg-[#9A6641]/30 rounded-full"></div>
+
+          {/* Mission Card (Left) */}
+          <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-sm p-8 lg:p-10 rounded-2xl shadow-lg border border-white/20 text-right">
+             <h3 className="text-3xl font-bold text-[#642C32] mb-4">
+              رسالتنا
+            </h3>
+            <p className="text-xl leading-relaxed">
+              {renderTextWithLogo(aboutData['رسالتنا'])}
             </p>
           </motion.div>
         </div>
       </div>
-    </section>
+      {/* Decorative Accent */}
+      <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-[#9A6641]/5 rounded-full -z-0"></div>
+    </motion.section>
   );
 };
 
