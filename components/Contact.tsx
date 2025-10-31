@@ -90,6 +90,10 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                         <label htmlFor="email" className="block text-sm font-medium text-[#642C32] mb-2">البريد الإلكتروني</label>
                         <input type="email" name="email" id="email" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
                     </div>
+                     <div>
+                        <label htmlFor="phone" className="block text-sm font-medium text-[#642C32] mb-2">رقم الجوال</label>
+                        <input type="tel" name="phone" id="phone" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
+                    </div>
                     <div>
                         <label htmlFor="message" className="block text-sm font-medium text-[#642C32] mb-2">الرسالة</label>
                         <textarea name="message" id="message" rows={5} required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200 resize-none"></textarea>
@@ -111,8 +115,24 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                     <div className="flex justify-start items-start gap-5">
                         <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><LocationIcon /></div>
                         <div className="text-right">
-                            <h4 className="mb-1">عنوان</h4>
-                            <p className="mt-1">{contactData.address}</p>
+                            <h4 className="mb-1">العنوان</h4>
+                            {(() => {
+                                const address = contactData.address;
+                                if (!address) return <p className="mt-1">...</p>;
+                                
+                                const parts = address.split('–');
+                                if (parts.length >= 3) {
+                                    const line1 = `${parts[0].trim()} – ${parts[1].trim()} –`;
+                                    const line2 = parts.slice(2).join('–').trim();
+                                    return (
+                                        <div className="mt-1">
+                                            <p>{line1}</p>
+                                            <p>{line2}</p>
+                                        </div>
+                                    );
+                                }
+                                return <p className="mt-1">{address}</p>;
+                            })()}
                         </div>
                     </div>
                     {/* Phone */}

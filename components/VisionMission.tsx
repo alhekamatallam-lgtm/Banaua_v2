@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 
 interface VisionMissionProps {
   aboutData: {
-    'رؤيتنا': string;
-    'رسالتنا': string;
+    vision_title: string;
+    vision_content: string;
+    mission_title: string;
+    mission_content: string;
   };
   logoUrl?: string;
 }
@@ -61,10 +63,10 @@ const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => 
           {/* Vision Card (Right) */}
           <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-sm p-8 lg:p-10 rounded-2xl shadow-lg border border-white/20 text-right">
             <h3 className="text-3xl font-bold text-[#642C32] mb-4">
-              رؤيتنا
+              {aboutData.vision_title || 'رؤيتنا'}
             </h3>
-            <p className="text-xl leading-relaxed">
-              {renderTextWithLogo(aboutData['رؤيتنا'])}
+            <p className="text-xl leading-relaxed text-justify">
+              {renderTextWithLogo(aboutData.vision_content || '...جاري تحميل المحتوى')}
             </p>
           </motion.div>
           
@@ -74,10 +76,10 @@ const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => 
           {/* Mission Card (Left) */}
           <motion.div variants={cardVariants} className="bg-white/80 backdrop-blur-sm p-8 lg:p-10 rounded-2xl shadow-lg border border-white/20 text-right">
              <h3 className="text-3xl font-bold text-[#642C32] mb-4">
-              رسالتنا
+              {aboutData.mission_title || 'رسالتنا'}
             </h3>
-            <p className="text-xl leading-relaxed">
-              {renderTextWithLogo(aboutData['رسالتنا'])}
+            <p className="text-xl leading-relaxed text-justify">
+              {renderTextWithLogo(aboutData.mission_content || '...جاري تحميل المحتوى')}
             </p>
           </motion.div>
         </div>

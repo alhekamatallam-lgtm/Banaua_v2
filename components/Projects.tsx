@@ -1,105 +1,83 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { wrap } from 'popmotion';
+import React from 'react';
+import { motion } from 'framer-motion';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper modules
+import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
 
+// Define the interface for a single slide
 interface Slide {
   link: string;
   description: string;
 }
 
+// Define the props for the Projects component
 interface ProjectsProps {
   slides: Slide[];
 }
 
-const variants = {
-  enter: (direction: number) => ({
-    opacity: 0,
-    x: direction > 0 ? '100%' : '-100%',
-  }),
-  center: {
-    opacity: 1,
-    x: '0%',
-  },
-  exit: (direction: number) => ({
-    opacity: 0,
-    x: direction < 0 ? '100%' : '-100%',
-  }),
-};
-
 const Projects: React.FC<ProjectsProps> = ({ slides }) => {
-  const [[page, direction], setPage] = useState([0, 0]);
-  const imageIndex = wrap(0, slides.length, page);
-
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection]);
-  };
-
-  useEffect(() => {
-    const timer = setTimeout(() => paginate(1), 4000);
-    return () => clearTimeout(timer);
-  }, [page, slides.length]);
-
   if (!slides || slides.length === 0) {
-    return null;
+    return null; // Don't render anything if there are no slides
   }
 
   return (
     <motion.section
       id="projects"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: 'easeInOut' }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
       viewport={{ once: true }}
-      className="py-20 md:py-32 bg-white"
+      className="w-full h-[90vh] md:h-screen bg-black relative mt-8"
     >
-      <div className="container mx-auto px-6 text-center">
-        <div className="mb-12">
-          <h2 className="section-intro-heading">أعمالنا</h2>
-        </div>
-
-        <div className="relative h-[350px] md:h-[600px] w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-2xl">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={page}
-              className="absolute h-full w-full"
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{
-                x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.5 }
-              }}
-            >
-              <img src={slides[imageIndex].link} alt={slides[imageIndex].description} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
-                <h3 className="text-white text-right tracking-wide text-2xl md:text-3xl" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.8)' }}>{slides[imageIndex].description}</h3>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          <div className="absolute top-1/2 -translate-y-1/2 left-4 z-10">
-             <button onClick={() => paginate(-1)} className="bg-white/50 hover:bg-white text-[#1A1A1A] p-3 rounded-full transition shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-             </button>
-          </div>
-          <div className="absolute top-1/2 -translate-y-1/2 right-4 z-10">
-            <button onClick={() => paginate(1)} className="bg-white/50 hover:bg-white text-[#1A1A1A] p-3 rounded-full transition shadow-lg">
-                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-center space-x-reverse space-x-3 mt-6">
-            {slides.map((_, i) => (
-                <button
-                    key={i}
-                    onClick={() => setPage([i, i > imageIndex ? 1 : -1])}
-                    className={`w-3 h-3 rounded-full transition-colors duration-300 ${i === imageIndex ? 'bg-[#9A6641]' : 'bg-gray-300 hover:bg-gray-400'}`}
-                    aria-label={`Go to slide ${i + 1}`}
-                ></button>
-            ))}
-        </div>
+      <div className="absolute top-16 left-0 right-0 z-20 text-center">
+        <h2 className="section-intro-heading !border-b-0 text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            من مشاريعنا
+        </h2>
       </div>
+      <Swiper
+        dir="rtl" // Set direction to Right-to-Left
+        spaceBetween={0}
+        centeredSlides={true}
+        loop={true}
+        effect={'fade'} // Smooth fade effect
+        fadeEffect={{ crossFade: true }}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={true}
+        modules={[Autoplay, Pagination, Navigation, EffectFade]}
+        className="w-full h-full"
+      >
+        {slides.map((slide, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative w-full h-full">
+              <img
+                src={slide.link}
+                alt={slide.description}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/40"></div>
+              <div className="absolute inset-0 flex items-center justify-center p-8 text-center">
+                <motion.h3
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.5 }}
+                    className="text-white text-3xl md:text-5xl max-w-3xl"
+                    style={{ textShadow: '0px 2px 10px rgba(0,0,0,0.8)' }}
+                >
+                  {slide.description}
+                </motion.h3>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </motion.section>
   );
 };

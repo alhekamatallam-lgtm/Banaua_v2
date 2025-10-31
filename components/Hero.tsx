@@ -17,8 +17,13 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '200%']);
 
-  const defaultImage = "https://images.unsplash.com/photo-1542337854-56de6c58fad6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80";
+  // Optimized default image
+  const defaultImage = "https://images.unsplash.com/photo-1542337854-56de6c58fad6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&q=75";
   const defaultDescription = "نصنع البهجة للمكان";
+
+  const scrollToProjects = () => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section
@@ -59,7 +64,9 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-10 z-20"
+        className="absolute bottom-10 z-20 cursor-pointer"
+        onClick={scrollToProjects}
+        title="انتقل إلى المشاريع"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}

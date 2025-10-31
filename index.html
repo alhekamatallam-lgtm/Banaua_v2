@@ -1,94 +1,164 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Updated Favicon to use the company logo -->
-    <link rel="icon" type="image/png" href="https://i.ibb.co/fYCg9Lh8/3.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>بنايا الأفق | Banaya Horizon</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Include multiple weights: 300 (Light), 400 (Regular), 500 (Medium), 700 (Bold) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-      /* --- Professional Typography System --- */
-      
-      /* Base text styles */
-      body {
-        font-family: 'Noto Sans Arabic', sans-serif;
-        font-weight: 400; /* Regular */
-        color: rgba(26, 26, 26, 0.85);
-        line-height: 1.9;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Banaya Horizon | بنايا الأفق</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://i.ibb.co/fYCg9Lh8/3.png" />
 
-      /* Headings (H2, H3) */
-      h2, h3, .heading-style {
-        font-family: 'Noto Sans Arabic', sans-serif;
-        font-weight: 700; /* Bold */
-        color: #1A1A1A;
-        letter-spacing: -0.5px;
-        text-shadow: 0px 1px 3px rgba(0,0,0,0.08);
-      }
+  <!-- Preload Hero Image for faster LCP -->
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1542337854-56de6c58fad6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&q=75">
 
-      /* Responsive heading sizes */
-      h2 { font-size: 2.25rem; } /* 36px */
-      h3 { font-size: 1.875rem; } /* 30px */
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Noto Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-      @media (max-width: 768px) {
-        h2 { font-size: 1.9125rem; } /* ~15% smaller */
-        h3 { font-size: 1.59375rem; } /* ~15% smaller */
-      }
+  <style>
+    /* Custom Typography System */
+    body {
+      font-family: 'Noto Sans Arabic', sans-serif; /* Using Noto Sans as a fallback for Effra */
+      font-weight: 400; /* Regular */
+      color: rgba(26, 26, 26, 0.85);
+      line-height: 1.9;
+    }
 
-      /* Subheadings */
-      h4, .subheading-style {
-        font-family: 'Noto Sans Arabic', sans-serif;
-        font-weight: 500; /* Medium */
-        color: #642C32;
-        letter-spacing: 0.5px;
-        line-height: 1.5;
-      }
+    h2, h3 {
+      font-weight: 700; /* Bold */
+      color: #1A1A1A;
+      letter-spacing: -0.5px;
+      text-shadow: 0px 1px 3px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+    
+    h2 { font-size: 2.25rem; } /* 36px */
+    h3 { font-size: 1.875rem; } /* 30px */
+    
+    @media (max-width: 768px) {
+      h2 { font-size: 1.875rem; } /* 30px */
+      h3 { font-size: 1.5rem; } /* 24px */
+    }
 
-      /* Section intro headings get an underline */
-      .section-intro-heading {
-         border-bottom: 2px solid #9A6641;
-         padding-bottom: 8px;
-         margin-bottom: 24px;
-         display: inline-block;
-      }
-      
-      /* General element transitions and readability */
-      p, a, li, span, button {
-        transition: color 0.4s ease, background-color 0.4s ease;
-      }
+    h4 {
+      font-weight: 500; /* Medium */
+      color: #642C32;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+    
+    .section-intro-heading {
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #9A6641;
+        display: inline-block;
+    }
+    
+    .readable-text {
+      max-width: 720px;
+    }
 
-      p.readable-text {
-        max-width: 720px;
-      }
+    /* Swiper Custom Styles */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color: #FFFFFF;
+      background-color: rgba(154, 102, 65, 0.5); /* #9A6641 with opacity */
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      transition: background-color 0.3s ease;
+    }
 
-      /* Accent Text */
-      .accent-text {
-        font-family: 'Noto Sans Arabic', sans-serif;
-        font-weight: 300; /* Light */
-        color: #9A6641;
-        font-style: italic;
-        letter-spacing: 0.1em; /* tracking-wide */
-      }
-    </style>
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      background-color: #642C32; /* Wine Red on hover */
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .swiper-pagination-bullet {
+      background-color: #FFFFFF;
+      opacity: 0.7;
+      width: 10px;
+      height: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .swiper-pagination-bullet-active {
+      background-color: #9A6641; /* Earth Brown for active bullet */
+      opacity: 1;
+    }
+
+    /* Marquee Styles */
+    .marquee-container {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+      mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+    }
+    .marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-container:hover .marquee {
+      animation-play-state: paused;
+    }
+    
+    [dir="rtl"] .marquee {
+       animation-name: marquee-rtl;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0%); }
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes marquee-rtl {
+      from { transform: translateX(0%); }
+      to { transform: translateX(50%); }
+    }
+
+    /* Additional configuration for Tailwind */
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans Arabic', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </style>
+
   <script type="importmap">
 {
   "imports": {
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "popmotion": "https://aistudiocdn.com/popmotion@^11.0.5"
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
+    "swiper/react": "https://cdn.jsdelivr.net/npm/swiper@11/swiper-react.mjs",
+    "swiper/modules": "https://cdn.jsdelivr.net/npm/swiper@11/modules/index.mjs",
+    "swiper/": "https://aistudiocdn.com/swiper@^12.0.3/"
   }
 }
 </script>
 </head>
-  <body class="bg-[#F9F7F5]">
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
