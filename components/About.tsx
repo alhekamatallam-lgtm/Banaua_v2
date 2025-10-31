@@ -46,7 +46,7 @@ const About: React.FC<AboutProps> = ({ aboutData }) => {
           {/* About Company Text */}
           <div className="order-1 md:order-2 text-right">
             <h2 className="section-intro-heading">
-              عن <span className="text-[#9A6641]">بنايا الأفق</span>
+              من نحن
             </h2>
             <p className="readable-text">
               {aboutData['عن بنايا هورايزون']}
