@@ -5,8 +5,11 @@ import Hero from './components/Hero';
 import Projects from './components/Projects';
 import About from './components/About';
 import VisionMission from './components/VisionMission';
-import Fields from './components/Fields'; // Import new component
-import Advantages from './components/Advantages'; // Import new component
+import Fields from './components/Fields';
+import Advantages from './components/Advantages';
+import OurWork from './components/OurWork';
+import Stats from './components/Stats';
+import WorkAreas from './components/WorkAreas';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -41,12 +44,27 @@ interface ContactData {
   snapchat: string;
 }
 
+interface OurProjectItem {
+  link_photo: string;
+  define: "Interior design" | "Exterior design" | "Our execution";
+}
+
 interface ApiData {
   Banaua: BanauaItem[];
   logo: LogoItem[];
   about: AboutData[];
   contact: ContactData[];
+  "Our Projects": OurProjectItem[];
 }
+
+interface ProcessedApiData {
+  Banaua: BanauaItem[];
+  logo: LogoItem[];
+  about: AboutData[];
+  contact: ContactData[];
+  our_projects: OurProjectItem[];
+}
+
 
 // Performance optimization helper function for images
 const optimizeImageUrl = (url: string, width = 1280, quality = 75): string => {
@@ -68,7 +86,7 @@ const optimizeImageUrl = (url: string, width = 1280, quality = 75): string => {
 };
 
 const App: React.FC = () => {
-  const [data, setData] = useState<ApiData | null>(null);
+  const [data, setData] = useState<ProcessedApiData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -79,17 +97,26 @@ const App: React.FC = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const result = await response.json();
+        const result: { success: boolean; data: ApiData } = await response.json();
+        
         if (result.success) {
-          // Optimize all images from the API
-          const optimizedData = {
-              ...result.data,
+          
+          const processedData: ProcessedApiData = {
+              logo: result.data.logo,
+              about: result.data.about,
+              contact: result.data.contact,
               Banaua: result.data.Banaua.map((item: BanauaItem) => ({
                   ...item,
                   link: optimizeImageUrl(item.link)
-              }))
+              })),
+              our_projects: (result.data["Our Projects"] || []).map((item: OurProjectItem) => ({
+                ...item,
+                link_photo: optimizeImageUrl(item.link_photo, 800, 75)
+              })),
           };
-          setData(optimizedData);
+          
+          setData(processedData);
+
         } else {
           throw new Error('API request returned an error');
         }
@@ -130,6 +157,9 @@ const App: React.FC = () => {
             {data.about && data.logo && <VisionMission aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
             <Fields />
             <Advantages />
+            <OurWork logoUrl={data.logo[0]?.logo} ourProjects={data.our_projects} />
+            <Stats />
+            <WorkAreas logoUrl={data.logo[0]?.logo} />
             {data.contact && <Contact contactData={data.contact[0]} />}
           </main>
           <Footer logoUrl={data.logo[0]?.logo} />

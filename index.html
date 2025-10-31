@@ -111,7 +111,7 @@
     .marquee {
       display: flex;
       width: max-content;
-      animation: marquee 30s linear infinite;
+      animation: marquee 80s linear infinite;
     }
     .marquee-container:hover .marquee {
       animation-play-state: paused;
@@ -137,6 +137,9 @@
         extend: {
           fontFamily: {
             sans: ['Noto Sans Arabic', 'sans-serif'],
+          },
+          aspectRatio: {
+            'video': '16 / 9',
           },
         },
       },
