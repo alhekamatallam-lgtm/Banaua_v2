@@ -45,9 +45,9 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         className="relative z-10 text-center px-4"
       >
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.9, delay: 0.3, ease: 'easeInOut' }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold"
           style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
         >

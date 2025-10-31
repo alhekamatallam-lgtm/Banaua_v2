@@ -52,30 +52,25 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-[#F9F7F5] overflow-hidden">
+    <motion.section
+      id="contact"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: "easeInOut" }}
+      viewport={{ once: true }}
+      className="py-20 bg-[#F9F7F5] overflow-hidden"
+    >
       <div className="container mx-auto px-6 max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-[#642C32]">
             تواصل معنا
           </h2>
           <div className="w-24 h-1 bg-[#9A6641] mx-auto mt-4"></div>
-        </motion.div>
+        </div>
         
         <div className="grid md:grid-cols-2 gap-x-20 gap-y-16 items-start">
             {/* Left Column on Desktop, Top on Mobile: Form */}
-            <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="bg-white p-8 sm:p-10 rounded-lg shadow-xl border border-gray-100 order-1 md:order-2 max-w-lg mx-auto w-full"
-            >
+            <div className="bg-white p-8 sm:p-10 rounded-lg shadow-xl border border-gray-100 order-1 md:order-2 max-w-lg mx-auto w-full">
                 {submissionStatus === 'success' ? (
                   <div className="text-center p-8 h-full flex flex-col justify-center items-center">
                     <h3 className="text-2xl font-bold text-[#642C32] mb-4">تم الإرسال بنجاح!</h3>
@@ -108,16 +103,10 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                     {submissionStatus === 'error' && <p className="text-red-500 text-sm mt-2">حدث خطأ ما. يرجى المحاولة مرة أخرى.</p>}
                   </form>
                 )}
-            </motion.div>
+            </div>
 
             {/* Right Column on Desktop, Bottom on Mobile: Info */}
-            <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                className="space-y-12 order-2 md:order-1"
-            >
+            <div className="space-y-12 order-2 md:order-1">
                 <div className="space-y-8 text-right">
                     {/* Address */}
                     <div className="flex justify-start items-start gap-5">
@@ -146,18 +135,19 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                 </div>
 
                 {/* Social Links */}
-                <div>
-                   <div className="flex justify-end gap-4">
+                <div className="text-right">
+                   <h4 className="font-bold text-xl text-[#1A1A1A]">تابعنا على</h4>
+                   <div className="mt-4 flex justify-start gap-4">
                        <a href={contactData.instagram} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><InstagramIcon /></a>
                        <a href={contactData.tiktok} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><TiktokIcon /></a>
                        <a href={contactData.x} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><XIcon /></a>
                        <a href={contactData.snapchat} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><SnapchatIcon /></a>
                    </div>
                 </div>
-            </motion.div>
+            </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

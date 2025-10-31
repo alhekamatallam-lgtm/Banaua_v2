@@ -5,6 +5,7 @@ import Projects from './components/Projects';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import LoadingSpinner from './components/LoadingSpinner';
 
 // Define interfaces for the API data structure for type safety
 interface BanauaItem {
@@ -73,7 +74,7 @@ const App: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="h-screen w-full flex items-center justify-center bg-[#F9F7F5] text-[#1A1A1A] text-xl">...جاري التحميل</div>;
+    return <LoadingSpinner />;
   }
 
   if (error) {

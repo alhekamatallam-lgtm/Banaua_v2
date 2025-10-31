@@ -44,18 +44,19 @@ const Projects: React.FC<ProjectsProps> = ({ slides }) => {
   }
 
   return (
-    <section id="projects" className="py-20 md:py-32 bg-white">
+    <motion.section
+      id="projects"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: 'easeInOut' }}
+      viewport={{ once: true }}
+      className="py-20 md:py-32 bg-white"
+    >
       <div className="container mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="mb-12"
-        >
+        <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">أعمالنا</h2>
           <div className="w-24 h-1 bg-[#642C32] mx-auto mb-8"></div>
-        </motion.div>
+        </div>
 
         <div className="relative h-[350px] md:h-[600px] w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-2xl">
           <AnimatePresence initial={false} custom={direction}>
@@ -100,7 +101,7 @@ const Projects: React.FC<ProjectsProps> = ({ slides }) => {
             ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
