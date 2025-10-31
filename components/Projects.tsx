@@ -54,8 +54,7 @@ const Projects: React.FC<ProjectsProps> = ({ slides }) => {
     >
       <div className="container mx-auto px-6 text-center">
         <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">أعمالنا</h2>
-          <div className="w-24 h-1 bg-[#642C32] mx-auto mb-8"></div>
+          <h2 className="section-intro-heading">أعمالنا</h2>
         </div>
 
         <div className="relative h-[350px] md:h-[600px] w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-2xl">
@@ -75,7 +74,7 @@ const Projects: React.FC<ProjectsProps> = ({ slides }) => {
             >
               <img src={slides[imageIndex].link} alt={slides[imageIndex].description} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
-                <h3 className="text-white text-xl md:text-3xl font-bold text-right tracking-wide">{slides[imageIndex].description}</h3>
+                <h3 className="text-white text-right tracking-wide text-2xl md:text-3xl" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.8)' }}>{slides[imageIndex].description}</h3>
               </div>
             </motion.div>
           </AnimatePresence>

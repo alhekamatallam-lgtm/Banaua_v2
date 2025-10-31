@@ -27,8 +27,8 @@ const About: React.FC<AboutProps> = ({ aboutData }) => {
               whileHover={{ scale: 1.03, boxShadow: '0px 15px 30px -10px rgba(0,0,0,0.1)' }}
               className="bg-white p-8 rounded-lg shadow-lg border border-gray-100"
             >
-              <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رؤيتنا</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h4 className="mb-4">رؤيتنا</h4>
+              <p>
                 {aboutData['رؤيتنا']}
               </p>
             </motion.div>
@@ -36,8 +36,8 @@ const About: React.FC<AboutProps> = ({ aboutData }) => {
               whileHover={{ scale: 1.03, boxShadow: '0px 15px 30px -10px rgba(0,0,0,0.1)' }}
               className="bg-white p-8 rounded-lg shadow-lg border border-gray-100"
             >
-              <h3 className="text-2xl font-bold text-[#9A6641] mb-4">رسالتنا</h3>
-              <p className="text-gray-600 leading-relaxed">
+              <h4 className="mb-4">رسالتنا</h4>
+              <p>
                 {aboutData['رسالتنا']}
               </p>
             </motion.div>
@@ -45,11 +45,10 @@ const About: React.FC<AboutProps> = ({ aboutData }) => {
           
           {/* About Company Text */}
           <div className="order-1 md:order-2 text-right">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
+            <h2 className="section-intro-heading">
               عن <span className="text-[#9A6641]">بنايا الأفق</span>
             </h2>
-            <div className="w-24 h-1 bg-[#642C32] mb-8 ml-auto"></div>
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="readable-text">
               {aboutData['عن بنايا هورايزون']}
             </p>
           </div>

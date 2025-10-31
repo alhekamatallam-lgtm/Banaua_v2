@@ -48,7 +48,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.3, ease: 'easeInOut' }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold"
+          className="text-white text-4xl md:text-6xl lg:text-7xl"
           style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
         >
           {heroData?.description || defaultDescription}

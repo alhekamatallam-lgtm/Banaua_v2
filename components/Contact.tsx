@@ -62,10 +62,9 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
     >
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-[#642C32]">
+          <h2 className="section-intro-heading">
             تواصل معنا
           </h2>
-          <div className="w-24 h-1 bg-[#9A6641] mx-auto mt-4"></div>
         </div>
         
         <div className="grid md:grid-cols-2 gap-x-20 gap-y-16 items-start">
@@ -73,8 +72,8 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
             <div className="bg-white p-8 sm:p-10 rounded-lg shadow-xl border border-gray-100 order-1 md:order-2 max-w-lg mx-auto w-full">
                 {submissionStatus === 'success' ? (
                   <div className="text-center p-8 h-full flex flex-col justify-center items-center">
-                    <h3 className="text-2xl font-bold text-[#642C32] mb-4">تم الإرسال بنجاح!</h3>
-                    <p className="text-gray-600">شكرًا لتواصلك معنا. سنقوم بالرد عليك في أقرب وقت ممكن.</p>
+                    <h3 className="mb-4">تم الإرسال بنجاح!</h3>
+                    <p>شكرًا لتواصلك معنا. سنقوم بالرد عليك في أقرب وقت ممكن.</p>
                   </div>
                 ) : (
                   <form 
@@ -84,15 +83,15 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                     className="space-y-6 text-right"
                   >
                     <div>
-                        <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">الاسم</label>
+                        <label htmlFor="name" className="block text-sm font-medium text-[#642C32] mb-2">الاسم</label>
                         <input type="text" name="name" id="name" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
                     </div>
                     <div>
-                        <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <label htmlFor="email" className="block text-sm font-medium text-[#642C32] mb-2">البريد الإلكتروني</label>
                         <input type="email" name="email" id="email" required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200" />
                     </div>
                     <div>
-                        <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-2">الرسالة</label>
+                        <label htmlFor="message" className="block text-sm font-medium text-[#642C32] mb-2">الرسالة</label>
                         <textarea name="message" id="message" rows={5} required className="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9A6641] focus:border-[#9A6641] transition duration-200 resize-none"></textarea>
                     </div>
                     <div>
@@ -112,32 +111,32 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                     <div className="flex justify-start items-start gap-5">
                         <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><LocationIcon /></div>
                         <div className="text-right">
-                            <h4 className="font-bold text-xl text-[#1A1A1A]">عنوان</h4>
-                            <p className="mt-1 text-gray-600">{contactData.address}</p>
+                            <h4 className="mb-1">عنوان</h4>
+                            <p className="mt-1">{contactData.address}</p>
                         </div>
                     </div>
                     {/* Phone */}
                     <div className="flex justify-start items-start gap-5">
                         <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><PhoneIcon /></div>
                         <div className="text-right">
-                           <h4 className="font-bold text-xl text-[#1A1A1A]">الهاتف</h4>
-                           <p className="mt-1 text-gray-600" dir="ltr">{contactData.phone1} / {contactData.phone2}</p>
+                           <h4 className="mb-1">الهاتف</h4>
+                           <p className="mt-1" dir="ltr">{contactData.phone1} / {contactData.phone2}</p>
                         </div>
                     </div>
                     {/* Email */}
                     <div className="flex justify-start items-start gap-5">
                          <div className="flex-shrink-0 bg-[#9A6641] p-4 rounded-full text-white"><MailIcon /></div>
                         <div className="text-right">
-                           <h4 className="font-bold text-xl text-[#1A1A1A]">البريد الإلكتروني</h4>
-                           <a href={`mailto:${contactData.email}`} className="mt-1 text-gray-600 hover:text-[#642C32]">{contactData.email}</a>
+                           <h4 className="mb-1">البريد الإلكتروني</h4>
+                           <a href={`mailto:${contactData.email}`} className="mt-1 hover:text-[#642C32]">{contactData.email}</a>
                         </div>
                     </div>
                 </div>
 
                 {/* Social Links */}
                 <div className="text-right">
-                   <h4 className="font-bold text-xl text-[#1A1A1A]">تابعنا على</h4>
-                   <div className="mt-4 flex justify-start gap-4">
+                   <h4 className="mb-4">تابعنا على</h4>
+                   <div className="flex justify-start gap-4">
                        <a href={contactData.instagram} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><InstagramIcon /></a>
                        <a href={contactData.tiktok} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><TiktokIcon /></a>
                        <a href={contactData.x} target="_blank" rel="noopener noreferrer" className="p-3 bg-[#9A6641] hover:bg-[#642C32] text-white rounded-full transition-colors"><XIcon /></a>
