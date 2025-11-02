@@ -28,7 +28,7 @@ const Projects: React.FC<ProjectsProps> = ({ slides }) => {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1.5, ease: "easeInOut" }}
       viewport={{ once: true }}
-      className="w-full h-[90vh] md:h-screen bg-black relative mt-8"
+      className="w-full h-[90vh] md:h-screen bg-black relative mt-4"
     >
       <div className="absolute top-16 left-0 right-0 z-20 text-center">
         <h2 className="section-intro-heading !border-b-0 text-white" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>

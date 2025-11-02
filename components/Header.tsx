@@ -36,7 +36,11 @@ const Header: React.FC<HeaderProps> = ({ logoUrl }) => {
         {/* Logo */}
         <div>
             {logoUrl ? (
-                <img src={logoUrl} alt="Banaya Horizon Logo" className="h-10 transition-all duration-300" />
+                <img 
+                  src={logoUrl} 
+                  alt="Banaya Horizon Logo" 
+                  className={`h-10 transition-all duration-500 ${!isScrolled ? 'brightness-0 invert' : ''}`} 
+                />
             ) : (
                 <h1 className={`text-2xl font-bold tracking-wider transition-colors duration-300 ${
                     isScrolled ? 'text-[#9A6641]' : 'text-white'
