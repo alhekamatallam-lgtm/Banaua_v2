@@ -35,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({ logoUrl }) => {
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div>
+          <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
             {logoUrl ? (
                 <img 
                   src={logoUrl} 
@@ -48,6 +49,7 @@ const Header: React.FC<HeaderProps> = ({ logoUrl }) => {
                   بنايا الأفق
                 </h1>
             )}
+          </a>
         </div>
         
         {/* Action Button */}

@@ -20,15 +20,17 @@ const Footer: React.FC<FooterProps> = ({ logoUrl }) => {
           style={{ color: '#E9D5C0' }}
         >
           <span>©</span>
-          {logoUrl ? (
-            <img 
-              src={logoUrl} 
-              alt="شعار بنايا هورايزون" 
-              className="h-7 cursor-pointer filter brightness-0 invert transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-[0_0_8px_#9A6641]"
-            />
-          ) : (
-            <span>بنايا هورايزون</span>
-          )}
+          <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
+            {logoUrl ? (
+              <img 
+                src={logoUrl} 
+                alt="شعار بنايا هورايزون" 
+                className="h-7 cursor-pointer filter brightness-0 invert transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-[0_0_8px_#9A6641]"
+              />
+            ) : (
+              <span>بنايا هورايزون</span>
+            )}
+          </a>
           <span>| Banaya Horizon — All Rights Reserved.</span>
         </div>
       </div>
