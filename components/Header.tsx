@@ -30,13 +30,17 @@ const SnapchatIcon = () => (
     </svg>
 );
 
-// Helper to ensure URL is absolute
-const ensureAbsoluteUrl = (url?: string): string | undefined => {
-    if (!url) return undefined;
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url;
+// Helper to format social media URLs correctly
+const formatSocialUrl = (baseUrl: string, value?: string): string | undefined => {
+    if (!value || value.trim() === '') return undefined;
+    
+    const cleanValue = value.trim().replace(/^@/, '');
+
+    if (cleanValue.startsWith('http://') || cleanValue.startsWith('https://')) {
+        return cleanValue;
     }
-    return `https://${url}`;
+
+    return `${baseUrl}${cleanValue}`;
 };
 
 // Interfaces
@@ -71,11 +75,11 @@ const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
   };
 
   const socialLinks = contactData ? [
-    { icon: <InstagramIcon />, href: ensureAbsoluteUrl(contactData.instagram), name: "Instagram" },
+    { icon: <InstagramIcon />, href: formatSocialUrl('https://www.instagram.com/', contactData.instagram), name: "Instagram" },
     { icon: <TiktokIcon />, href: "https://www.tiktok.com/@banaya_ksa", name: "TikTok" },
-    { icon: <XIcon />, href: ensureAbsoluteUrl(contactData.x), name: "X" },
+    { icon: <XIcon />, href: formatSocialUrl('https://x.com/', contactData.x), name: "X" },
     { icon: <SnapchatIcon />, href: "https://www.snapchat.com/@banaya_ksa", name: "Snapchat" },
-  ].filter(link => link.href && link.href.trim() !== '') : [];
+  ].filter(link => link.href) : [];
 
 
   return (

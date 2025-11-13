@@ -51,6 +51,19 @@ const SnapchatIcon = () => (
     </svg>
 );
 
+// Helper to format social media URLs correctly
+const formatSocialUrl = (baseUrl: string, value?: string): string | undefined => {
+    if (!value || value.trim() === '') return undefined;
+    
+    const cleanValue = value.trim().replace(/^@/, '');
+
+    if (cleanValue.startsWith('http://') || cleanValue.startsWith('https://')) {
+        return cleanValue;
+    }
+
+    return `${baseUrl}${cleanValue}`;
+};
+
 interface ContactData {
     address: string;
     phone1: string;
@@ -140,23 +153,12 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
         },
     ];
     
-    // A more robust way of creating social links to avoid errors with empty or malformed data
     const socialLinks = [
-        // Conditionally add Instagram only if the username is provided
-        ...(contactData.instagram && contactData.instagram.trim()
-            ? [{ icon: <InstagramIcon />, href: `https://instagram.com/${contactData.instagram.trim()}`, name: "Instagram" }]
-            : []),
-        
-        // TikTok and Snapchat are hardcoded and always present
+        { icon: <InstagramIcon />, href: formatSocialUrl('https://www.instagram.com/', contactData.instagram), name: "Instagram" },
         { icon: <TiktokIcon />, href: "https://www.tiktok.com/@banaya_ksa", name: "TikTok" },
-
-        // Conditionally add X only if the username is provided
-        ...(contactData.x && contactData.x.trim()
-            ? [{ icon: <XIcon />, href: `https://x.com/${contactData.x.trim()}`, name: "X" }]
-            : []),
-        
+        { icon: <XIcon />, href: formatSocialUrl('https://x.com/', contactData.x), name: "X" },
         { icon: <SnapchatIcon />, href: "https://www.snapchat.com/add/banaya_ksa", name: "Snapchat" },
-    ];
+    ].filter(link => link.href);
 
 
     const containerVariants = {
