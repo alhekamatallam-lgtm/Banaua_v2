@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 // --- SVG Icons ---
@@ -46,19 +46,10 @@ const XIcon = () => (
 );
 
 const SnapchatIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20.7 21.6" fill="currentColor">
-        <path d="M12.7,1.3c-2.4-0.8-5.2-0.4-7.4,1.1C3,3.9,1.6,6.2,1.4,8.8c-0.1,2.1,0.5,4.2,1.8,5.9c0.8,1.1,1.4,2.3,1.4,3.7v2.1c0,0.5,0.4,1,1,1h7.5c0.5,0,1-0.4,1-1v-2.1c0-1.4,0.6-2.6,1.4-3.7c1.3-1.7,1.9-3.8,1.8-5.9C19.1,6.2,17.7,3.9,15.4,2.4C14.6,1.8,13.6,1.4,12.7,1.3z" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" >
+        <path d="M11.9,1.3C9.2,0.5,6.1,1,3.9,2.8c-2,1.7-3.3,4.2-3.4,6.9c-0.2,2.6,0.6,5.2,2.2,7.3c1,1.3,1.7,2.8,1.7,4.6v2.6c0,0.7,0.5,1.2,1.2,1.2h9.2c0.7,0,1.2-0.5,1.2-1.2v-2.6c0-1.7,0.7-3.2,1.7-4.6c1.6-2.1,2.4-4.7,2.2-7.3C23.5,7,22.1,4.5,20.2,2.8C18.9,1.8,17.3,1.3,15.7,1.1C14.5,1,13.2,1,11.9,1.3z"/>
     </svg>
 );
-
-// Helper to ensure URL is absolute
-const ensureAbsoluteUrl = (url?: string): string | undefined => {
-    if (!url) return undefined;
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url;
-    }
-    return `https://${url}`;
-};
 
 interface ContactData {
     address: string;
@@ -76,6 +67,53 @@ interface ContactProps {
 }
 
 const Contact: React.FC<ContactProps> = ({ contactData }) => {
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        email: '',
+        message: '',
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitStatus('idle');
+
+        // IMPORTANT: This is a placeholder test endpoint.
+        // For a real application, replace this with a service like Formspree, Netlify Forms, or your own backend API.
+        const FORM_ENDPOINT = "https://jsonplaceholder.typicode.com/posts";
+
+        try {
+            const response = await fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                setSubmitStatus('success');
+                setFormData({ name: '', phone: '', email: '', message: '' });
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+    
     const contactItems = [
         {
             icon: <PhoneIcon />,
@@ -101,13 +139,25 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
             aria: "Our address",
         },
     ];
-
+    
+    // A more robust way of creating social links to avoid errors with empty or malformed data
     const socialLinks = [
-        { icon: <InstagramIcon />, href: ensureAbsoluteUrl(contactData.instagram), name: "Instagram" },
+        // Conditionally add Instagram only if the username is provided
+        ...(contactData.instagram && contactData.instagram.trim()
+            ? [{ icon: <InstagramIcon />, href: `https://instagram.com/${contactData.instagram.trim()}`, name: "Instagram" }]
+            : []),
+        
+        // TikTok and Snapchat are hardcoded and always present
         { icon: <TiktokIcon />, href: "https://www.tiktok.com/@banaya_ksa", name: "TikTok" },
-        { icon: <XIcon />, href: ensureAbsoluteUrl(contactData.x), name: "X" },
-        { icon: <SnapchatIcon />, href: "https://www.snapchat.com/@banaya_ksa", name: "Snapchat" },
-    ].filter(link => link.href && link.href.trim() !== '');
+
+        // Conditionally add X only if the username is provided
+        ...(contactData.x && contactData.x.trim()
+            ? [{ icon: <XIcon />, href: `https://x.com/${contactData.x.trim()}`, name: "X" }]
+            : []),
+        
+        { icon: <SnapchatIcon />, href: "https://www.snapchat.com/add/banaya_ksa", name: "Snapchat" },
+    ];
+
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -149,7 +199,7 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                         <motion.div
                             key={index}
                             variants={itemVariants}
-                            className="bg-white p-8 rounded-2xl"
+                            className="bg-white p-8 rounded-2xl shadow-sm"
                         >
                             <div className="flex justify-center text-[#642C32] mb-4">
                                 {item.icon}
@@ -160,6 +210,104 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                             </div>
                         </motion.div>
                     ))}
+                </motion.div>
+                
+                {/* --- Quick Contact Form --- */}
+                <motion.div variants={itemVariants} className="mt-20">
+                    <div className="text-center mb-12">
+                         <h3 className="text-3xl font-bold text-[#642C32]">
+                            أو أرسل لنا مباشرة
+                        </h3>
+                        <p className="mt-2 text-lg text-gray-600">
+                            املأ النموذج أدناه وسنتواصل معك في أقرب وقت.
+                        </p>
+                    </div>
+
+                    <form
+                        onSubmit={handleSubmit}
+                        className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg"
+                        noValidate
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label htmlFor="name" className="block text-right mb-2 font-semibold text-gray-700">
+                                    الاسم الكامل
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="phone" className="block text-right mb-2 font-semibold text-gray-700">
+                                    رقم الجوال
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="mb-6">
+                            <label htmlFor="email" className="block text-right mb-2 font-semibold text-gray-700">
+                                البريد الإلكتروني
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                required
+                            />
+                        </div>
+                        <div className="mb-8">
+                            <label htmlFor="message" className="block text-right mb-2 font-semibold text-gray-700">
+                                كيف يمكننا مساعدتك؟
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows={5}
+                                value={formData.message}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300 resize-none"
+                                required
+                            ></textarea>
+                        </div>
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full bg-[#642C32] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#9A6641] transition-colors duration-300 text-lg focus:outline-none focus:ring-4 focus:ring-[#9A6641]/50 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            >
+                                {isSubmitting ? 'جارٍ الإرسال...' : 'إرسال'}
+                            </button>
+                        </div>
+                        <div className="h-12 mt-4 text-center">
+                            {submitStatus === 'success' && (
+                                <p className="text-green-600 bg-green-100 p-3 rounded-lg">
+                                    تم استلام رسالتك بنجاح! سنتواصل معك قريباً.
+                                </p>
+                            )}
+                            {submitStatus === 'error' && (
+                                <p className="text-red-600 bg-red-100 p-3 rounded-lg">
+                                    حدث خطأ ما. يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة.
+                                </p>
+                            )}
+                        </div>
+                    </form>
                 </motion.div>
 
                 {socialLinks.length > 0 && (

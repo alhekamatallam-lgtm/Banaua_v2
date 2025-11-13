@@ -46,7 +46,7 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
     const parts = title.split('بنايا');
     
     return (
-      <div className="flex justify-center items-center gap-x-3">
+      <div className="flex justify-end items-center gap-x-3">
         <span>{parts[0]}</span>
         <img 
           src={logoUrl} 
@@ -67,12 +67,12 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
       viewport={{ once: true }}
       className="pt-20 md:pt-32 bg-[#F9F7F5] overflow-hidden"
     >
-      <div className="container mx-auto px-6 text-center">
-        <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-6 text-right">
+        <div className="max-w-4xl ml-auto">
              <h2 className="section-intro-heading text-4xl md:text-5xl">
               {renderProfessionalTitle()}
             </h2>
-            <p className="readable-text mx-auto text-xl font-medium leading-relaxed text-right">
+            <p className="readable-text ml-auto text-xl font-medium leading-relaxed text-justify">
               {renderContentWithLogo(aboutData?.about_content || '...جاري تحميل المحتوى')}
             </p>
         </div>

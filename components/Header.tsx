@@ -87,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
         isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div>
           <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
@@ -108,10 +108,10 @@ const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
         </div>
         
         {/* Right side actions */}
-        <div className="flex items-center gap-x-6">
+        <div className="flex items-center gap-x-3 md:gap-x-6">
             {/* Social Icons */}
             {socialLinks.length > 0 && (
-                 <div className="hidden md:flex items-center gap-x-5">
+                 <div className="flex items-center gap-x-2 md:gap-x-4">
                     {socialLinks.map((social) => (
                         <a
                             key={social.name}
@@ -132,7 +132,7 @@ const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
             {/* Action Button */}
             <button
               onClick={scrollToContact}
-              className="bg-[#642C32] text-white font-bold py-3 px-6 rounded-2xl hover:bg-[#9A6641] transition-colors duration-300"
+              className="whitespace-nowrap rounded-2xl bg-[#642C32] px-3 py-2 text-sm font-bold text-white transition-colors duration-300 hover:bg-[#9A6641] md:px-6 md:py-3 md:text-base"
             >
               ابدأ مشروعك الآن
             </button>
