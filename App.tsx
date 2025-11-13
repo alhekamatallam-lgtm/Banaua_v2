@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Projects from './components/Projects';
 import About from './components/About';
 import VisionMission from './components/VisionMission';
 import Fields from './components/Fields';
@@ -22,6 +21,7 @@ interface BanauaItem {
 
 interface LogoItem {
   logo: string;
+  area?: string;
 }
 
 interface AboutData {
@@ -101,6 +101,22 @@ const App: React.FC = () => {
         
         if (result.success) {
           
+          // Initial processing of projects
+          const projectsFromApi = (result.data["Our Projects"] || []).map((item: OurProjectItem) => ({
+            ...item,
+            link_photo: optimizeImageUrl(item.link_photo, 800, 75)
+          }));
+        
+          // --- Data Patch ---
+          // The user reported that an exterior design image was miscategorized as "Our execution".
+          // This patch corrects the category for the specific image.
+          // The best long-term solution is to fix this in the data source (Google Sheet).
+          const projectToPatch = projectsFromApi.find(p => p.link_photo.includes('i.ibb.co/w0Y8mY0/7.jpg'));
+          if (projectToPatch && projectToPatch.define === "Our execution") {
+            projectToPatch.define = "Exterior design";
+          }
+          // --- End of Patch ---
+
           const processedData: ProcessedApiData = {
               logo: result.data.logo,
               about: result.data.about,
@@ -109,10 +125,7 @@ const App: React.FC = () => {
                   ...item,
                   link: optimizeImageUrl(item.link)
               })),
-              our_projects: (result.data["Our Projects"] || []).map((item: OurProjectItem) => ({
-                ...item,
-                link_photo: optimizeImageUrl(item.link_photo, 800, 75)
-              })),
+              our_projects: projectsFromApi,
           };
           
           setData(processedData);
@@ -149,17 +162,16 @@ const App: React.FC = () => {
 
       {data && (
         <div className="bg-[#F9F7F5] text-[#1A1A1A] antialiased">
-          <Header logoUrl={data.logo[0]?.logo} />
+          <Header logoUrl={data.logo[0]?.logo} contactData={data.contact[0]} />
           <main>
             <Hero heroData={optimizedHeroData} />
-            {data.Banaua && <Projects slides={data.Banaua} />}
             {data.about && data.logo && <About aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
             {data.about && data.logo && <VisionMission aboutData={data.about[0]} logoUrl={data.logo[0]?.logo} />}
             <Fields />
             <Advantages />
             <OurWork logoUrl={data.logo[0]?.logo} ourProjects={data.our_projects} />
             <Stats />
-            <WorkAreas logoUrl={data.logo[0]?.logo} />
+            <WorkAreas logoUrl={data.logo[0]?.logo} areaImageUrl={data.logo[0]?.area} />
             {data.contact && <Contact contactData={data.contact[0]} />}
           </main>
           <Footer logoUrl={data.logo[0]?.logo} />

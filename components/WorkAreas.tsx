@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 
 interface WorkAreasProps {
   logoUrl?: string;
+  areaImageUrl?: string;
 }
 
-const WorkAreas: React.FC<WorkAreasProps> = ({ logoUrl }) => {
+const WorkAreas: React.FC<WorkAreasProps> = ({ logoUrl, areaImageUrl }) => {
     const textVariants = {
         hidden: { x: 50, opacity: 0 },
         visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: 'easeOut' } },
@@ -46,7 +47,7 @@ const WorkAreas: React.FC<WorkAreasProps> = ({ logoUrl }) => {
                 {/* Frameless image with entrance animation */}
                 <motion.div variants={imageVariants}>
                     <img 
-                        src="https://i.ibb.co/WpVnYHtc/Chat-GPT-Image-1-2025-12-44-55.png" 
+                        src={areaImageUrl || "https://i.ibb.co/Jqj8vWq/saudi-map-no-text.png"} 
                         alt="خريطة مناطق عمل بنايا"
                         className="w-full h-auto"
                     />

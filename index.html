@@ -140,37 +140,6 @@
       opacity: 1;
     }
 
-    /* Marquee Styles */
-    .marquee-container {
-      overflow: hidden;
-      position: relative;
-      width: 100%;
-      -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
-      mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
-    }
-    .marquee {
-      display: flex;
-      width: max-content;
-      animation: marquee 80s linear infinite;
-    }
-    .marquee-container:hover .marquee {
-      animation-play-state: paused;
-    }
-    
-    [dir="rtl"] .marquee {
-       animation-name: marquee-rtl;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(0%); }
-      to { transform: translateX(-50%); }
-    }
-
-    @keyframes marquee-rtl {
-      from { transform: translateX(0%); }
-      to { transform: translateX(50%); }
-    }
-
     /* Additional configuration for Tailwind */
     tailwind.config = {
       theme: {

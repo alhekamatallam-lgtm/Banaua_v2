@@ -46,10 +46,19 @@ const XIcon = () => (
 );
 
 const SnapchatIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M11.9,2.2c-0.2,0-0.5,0-0.7,0.1C6.1,2.8,2.7,6.6,2.2,11.7c-0.1,0.9,0,1.9,0.2,2.8c0.2,0.7,0.5,1.4,0.9,2 c0.5,0.8,2.2,2.7,2.2,2.7c-0.1-0.1,0.5,0.4,0.5,0.4c0.1,0.1,0.2,0.2,0.3,0.2c0,0,0.1,0,0.1,0h4.8c0,0,0.1,0,0.1,0 c0.1,0,0.2-0.1,0.3-0.2c0,0,0.6-0.5,0.5-0.4c0,0,1.7-1.9,2.2-2.7c0.4-0.6,0.7-1.3,0.9-2c0.2-0.9,0.3-1.9,0.2-2.8 C21.1,6.5,17.2,2.5,11.9,2.2z M8.8,11.6c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5S9.6,11.6,8.8,11.6z M15,11.6 c-0.8,0-1.5-0.7-1.5-1.5s0.7-1.5,1.5-1.5s1.5,0.7,1.5,1.5S15.8,11.6,15,11.6z"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20.7 21.6" fill="currentColor">
+        <path d="M12.7,1.3c-2.4-0.8-5.2-0.4-7.4,1.1C3,3.9,1.6,6.2,1.4,8.8c-0.1,2.1,0.5,4.2,1.8,5.9c0.8,1.1,1.4,2.3,1.4,3.7v2.1c0,0.5,0.4,1,1,1h7.5c0.5,0,1-0.4,1-1v-2.1c0-1.4,0.6-2.6,1.4-3.7c1.3-1.7,1.9-3.8,1.8-5.9C19.1,6.2,17.7,3.9,15.4,2.4C14.6,1.8,13.6,1.4,12.7,1.3z" />
     </svg>
 );
+
+// Helper to ensure URL is absolute
+const ensureAbsoluteUrl = (url?: string): string | undefined => {
+    if (!url) return undefined;
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url;
+    }
+    return `https://${url}`;
+};
 
 interface ContactData {
     address: string;
@@ -94,10 +103,10 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
     ];
 
     const socialLinks = [
-        { icon: <InstagramIcon />, href: contactData.instagram, name: "Instagram" },
-        { icon: <TiktokIcon />, href: contactData.tiktok, name: "TikTok" },
-        { icon: <XIcon />, href: contactData.x, name: "X" },
-        { icon: <SnapchatIcon />, href: contactData.snapchat, name: "Snapchat" },
+        { icon: <InstagramIcon />, href: ensureAbsoluteUrl(contactData.instagram), name: "Instagram" },
+        { icon: <TiktokIcon />, href: "https://www.tiktok.com/@banaya_ksa", name: "TikTok" },
+        { icon: <XIcon />, href: ensureAbsoluteUrl(contactData.x), name: "X" },
+        { icon: <SnapchatIcon />, href: "https://www.snapchat.com/@banaya_ksa", name: "Snapchat" },
     ].filter(link => link.href && link.href.trim() !== '');
 
     const containerVariants = {

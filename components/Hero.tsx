@@ -8,6 +8,22 @@ interface HeroProps {
   };
 }
 
+// New mouse icon component
+const MouseScrollIcon = () => (
+    <svg width="24" height="40" viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1.5" y="1.5" width="21" height="37" rx="10.5" stroke="white" strokeWidth="3"/>
+        <motion.circle 
+            cx="12" 
+            cy="12" 
+            r="3" 
+            fill="white"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+        />
+    </svg>
+);
+
+
 const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -21,8 +37,9 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const defaultImage = "https://images.unsplash.com/photo-1542337854-56de6c58fad6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&q=75";
   const defaultDescription = "نصنع البهجة للمكان";
 
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToWork = () => {
+    // The target ID was updated from 'projects' to 'our-work' as the sections were merged.
+    document.getElementById('our-work')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -64,15 +81,16 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute bottom-10 z-20 cursor-pointer"
-        onClick={scrollToProjects}
-        title="انتقل إلى المشاريع"
+        className="absolute bottom-10 z-20"
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+         <motion.div
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          onClick={scrollToWork}
+          className="w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer ring-1 ring-white/20 hover:bg-white/20 transition-all duration-300"
+          title="تصفح أعمالنا"
         >
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+          <MouseScrollIcon />
         </motion.div>
       </motion.div>
     </section>
