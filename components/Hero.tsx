@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import type { ImageSet } from '../App';
 
 interface HeroProps {
   heroData?: {
-    link: string;
+    linkSet: ImageSet;
     description: string;
   };
 }
@@ -33,9 +34,10 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '200%']);
 
-  // Optimized default image
   const defaultImage = "https://images.unsplash.com/photo-1542337854-56de6c58fad6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1280&q=75";
   const defaultDescription = "نصنع البهجة للمكان";
+
+  const imageSetToUse = (heroData?.linkSet?.original) ? heroData.linkSet : { webp: '', original: defaultImage };
 
   const scrollToWork = () => {
     // The target ID was updated from 'projects' to 'our-work' as the sections were merged.
@@ -54,11 +56,14 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
           y: backgroundY,
         }}
       >
-        <img
-          src={heroData?.link || defaultImage}
-          alt="Modern Architecture"
-          className="w-full h-full object-cover"
-        />
+        <picture className="w-full h-full">
+            {imageSetToUse.webp && <source srcSet={imageSetToUse.webp} type="image/webp" />}
+            <img
+              src={imageSetToUse.original}
+              alt="Modern Architecture"
+              className="w-full h-full object-cover"
+            />
+        </picture>
         <div className="absolute inset-0 bg-black/15"></div>
       </motion.div>
 

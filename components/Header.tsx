@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import type { ImageSet } from '../App';
 
 // --- SVG Icons ---
 const InstagramIcon = () => (
@@ -52,11 +53,11 @@ interface ContactData {
 }
 
 interface HeaderProps {
-    logoUrl?: string;
+    logoSet?: ImageSet;
     contactData?: ContactData;
 }
 
-const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
+const Header: React.FC<HeaderProps> = ({ logoSet, contactData }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -95,12 +96,15 @@ const Header: React.FC<HeaderProps> = ({ logoUrl, contactData }) => {
         {/* Logo */}
         <div>
           <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
-            {logoUrl ? (
-                <img 
-                  src={logoUrl} 
-                  alt="Banaya Horizon Logo" 
-                  className={`h-10 transition-all duration-500 ${!isScrolled ? 'brightness-0 invert' : ''}`} 
-                />
+            {logoSet?.original ? (
+                <picture>
+                  {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+                  <img 
+                    src={logoSet.original} 
+                    alt="Banaya Horizon Logo" 
+                    className={`h-10 transition-all duration-500 ${!isScrolled ? 'brightness-0 invert' : ''}`} 
+                  />
+                </picture>
             ) : (
                 <h1 className={`text-2xl font-bold tracking-wider transition-colors duration-300 ${
                     isScrolled ? 'text-[#9A6641]' : 'text-white'

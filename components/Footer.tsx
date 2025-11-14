@@ -1,11 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { ImageSet } from '../App';
 
 interface FooterProps {
-  logoUrl?: string;
+  logoSet?: ImageSet;
 }
 
-const Footer: React.FC<FooterProps> = ({ logoUrl }) => {
+const Footer: React.FC<FooterProps> = ({ logoSet }) => {
   return (
     <motion.footer
       initial={{ opacity: 0 }}
@@ -21,12 +22,15 @@ const Footer: React.FC<FooterProps> = ({ logoUrl }) => {
         >
           <span>©</span>
           <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
-            {logoUrl ? (
-              <img 
-                src={logoUrl} 
-                alt="شعار بنايا هورايزون" 
-                className="h-7 cursor-pointer filter brightness-0 invert transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-[0_0_8px_#9A6641]"
-              />
+            {logoSet?.original ? (
+              <picture>
+                {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+                <img 
+                  src={logoSet.original} 
+                  alt="شعار بنايا هورايزون" 
+                  className="h-7 cursor-pointer filter brightness-0 invert transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-[0_0_8px_#9A6641]"
+                />
+              </picture>
             ) : (
               <span>بنايا هورايزون</span>
             )}

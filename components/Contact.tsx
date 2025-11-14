@@ -100,18 +100,20 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
         setIsSubmitting(true);
         setSubmitStatus('idle');
 
-        // IMPORTANT: This is a placeholder test endpoint.
-        // For a real application, replace this with a service like Formspree, Netlify Forms, or your own backend API.
-        const FORM_ENDPOINT = "https://jsonplaceholder.typicode.com/posts";
+        // Use the new production API endpoint for form submissions
+        const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbznMtSB-jzE8PEZ1J5-_obRQcOTZxbDn-pglLnKLfxgFpgNhulchTquW8sxxZxJAUl4/exec";
 
         try {
             const response = await fetch(FORM_ENDPOINT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                // Send data with the required 'sheet' property for the backend
+                body: JSON.stringify({
+                    sheet: "ContactForm",
+                    ...formData
+                }),
             });
 
             if (response.ok) {

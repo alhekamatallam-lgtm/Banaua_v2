@@ -4,16 +4,17 @@ import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper modules
 import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
+import type { ImageSet } from '../App';
 
 // Define project interface
 interface OurProject {
-    link_photo: string;
+    link_photo_set: ImageSet;
     define: "Interior design" | "Exterior design" | "Our execution";
 }
 
 // Define component props
 interface OurWorkProps {
-  logoUrl?: string;
+  logoSet?: ImageSet;
   ourProjects?: OurProject[];
 }
 
@@ -27,14 +28,7 @@ const getCategoryName = (define: OurProject['define']): string => {
     }
 }
 
-// High-res image URL helper for slider
-const getHighResImageUrl = (url: string) => {
-    if (!url) return '';
-    // Request a higher resolution image for the full-screen slider
-    return url.replace('w=800', 'w=1920').replace('q=75', 'q=90');
-}
-
-const OurWork: React.FC<OurWorkProps> = ({ logoUrl, ourProjects = [] }) => {
+const OurWork: React.FC<OurWorkProps> = ({ logoSet, ourProjects = [] }) => {
   const [activeFilter, setActiveFilter] = useState<string>('All');
 
   const filters = [
@@ -91,12 +85,15 @@ const OurWork: React.FC<OurWorkProps> = ({ logoUrl, ourProjects = [] }) => {
             <p className="text-xl md:text-2xl font-medium leading-relaxed text-gray-700 flex justify-center items-center flex-wrap gap-x-2">
               <span>من الفكرة إلى التسليم..</span>
               <span>تنفذ</span>
-              {logoUrl && (
-                <img
-                  src={logoUrl}
-                  alt="شعار بنايا"
-                  className="inline-block h-8 w-auto mx-1 align-middle -mt-1"
-                />
+              {logoSet?.original && (
+                <picture className="inline-block h-8 w-auto mx-1 align-middle -mt-1">
+                  {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+                  <img
+                    src={logoSet.original}
+                    alt="شعار بنايا"
+                    className="h-full w-full object-contain"
+                  />
+                </picture>
               )}
               <span>مشاريعها بروح تُعبر عن الإبداع والفخامة.</span>
             </p>
@@ -146,14 +143,17 @@ const OurWork: React.FC<OurWorkProps> = ({ logoUrl, ourProjects = [] }) => {
                 className="w-full h-full ken-burns-slider"
             >
                 {filteredProjects.map((project) => (
-                    <SwiperSlide key={project.link_photo}>
+                    <SwiperSlide key={project.link_photo_set.original}>
                         <div className="relative w-full h-full">
-                            <img
-                                src={getHighResImageUrl(project.link_photo)}
-                                alt={getCategoryName(project.define)}
-                                className="w-full h-full object-cover slide-image"
-                                loading="lazy"
-                            />
+                           <picture className="w-full h-full">
+                                {project.link_photo_set.webp && <source srcSet={project.link_photo_set.webp} type="image/webp" />}
+                                <img
+                                    src={project.link_photo_set.original}
+                                    alt={getCategoryName(project.define)}
+                                    className="w-full h-full object-cover slide-image"
+                                    loading="lazy"
+                                />
+                            </picture>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10"></div>
                              <div className="absolute bottom-0 right-0 p-6 md:p-10">
                                 <motion.div

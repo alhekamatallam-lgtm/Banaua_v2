@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { ImageSet } from '../App';
 
 interface VisionMissionProps {
   aboutData: {
@@ -8,14 +9,14 @@ interface VisionMissionProps {
     mission_title: string;
     mission_content: string;
   };
-  logoUrl?: string;
+  logoSet?: ImageSet;
 }
 
-const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => {
+const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoSet }) => {
   
   // Helper function to replace "بنايا" with the logo
   const renderTextWithLogo = (text: string) => {
-    if (!text || !logoUrl || !text.includes('بنايا')) {
+    if (!text || !logoSet?.original || !text.includes('بنايا')) {
       return text;
     }
     
@@ -26,11 +27,14 @@ const VisionMission: React.FC<VisionMissionProps> = ({ aboutData, logoUrl }) => 
           <React.Fragment key={index}>
             {part}
             {index < parts.length - 1 && (
-              <img 
-                src={logoUrl} 
-                alt="شعار بنايا" 
-                className="inline-block h-7 w-auto mx-1 align-middle -mt-1" 
-              />
+              <picture className="inline-block h-7 w-auto mx-1 align-middle -mt-1">
+                  {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+                  <img 
+                    src={logoSet.original} 
+                    alt="شعار بنايا" 
+                    className="h-full w-full object-contain"
+                  />
+              </picture>
             )}
           </React.Fragment>
         ))}

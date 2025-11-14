@@ -1,19 +1,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { ImageSet } from '../App';
 
 interface AboutProps {
   aboutData: {
     about_title: string;
     about_content: string;
   };
-  logoUrl?: string;
+  logoSet?: ImageSet;
 }
 
-const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
+const About: React.FC<AboutProps> = ({ aboutData, logoSet }) => {
   
   // Helper function for content paragraphs
   const renderContentWithLogo = (text: string) => {
-    if (!text || !logoUrl || !text.includes('بنايا')) {
+    if (!text || !logoSet?.original || !text.includes('بنايا')) {
       return text;
     }
     
@@ -24,11 +25,10 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
           <React.Fragment key={index}>
             {part}
             {index < parts.length - 1 && (
-              <img 
-                src={logoUrl} 
-                alt="شعار بنايا" 
-                className="inline-block h-6 w-auto mx-1 align-middle -mt-1" 
-              />
+              <picture className="inline-block h-6 w-auto mx-1 align-middle -mt-1">
+                  {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+                  <img src={logoSet.original} alt="شعار بنايا" className="h-full w-full object-contain" />
+              </picture>
             )}
           </React.Fragment>
         ))}
@@ -39,7 +39,7 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
   // Helper function for the professionally styled title
   const renderProfessionalTitle = () => {
     const title = aboutData?.about_title || 'عن بنايا هورايزون';
-    if (!logoUrl || !title.includes('بنايا')) {
+    if (!logoSet?.original || !title.includes('بنايا')) {
       return <span>{title}</span>;
     }
     
@@ -48,11 +48,10 @@ const About: React.FC<AboutProps> = ({ aboutData, logoUrl }) => {
     return (
       <div className="flex justify-end items-center gap-x-3">
         <span>{parts[0]}</span>
-        <img 
-          src={logoUrl} 
-          alt="شعار بنايا" 
-          className="h-10 md:h-12 w-auto" // Height matched to text-4xl/5xl for balance
-        />
+        <picture className="h-10 md:h-12 w-auto">
+          {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
+          <img src={logoSet.original} alt="شعار بنايا" className="h-full w-full object-contain" />
+        </picture>
         <span>{parts[1]}</span>
       </div>
     );

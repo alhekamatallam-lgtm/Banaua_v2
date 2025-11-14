@@ -1,6 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+const logoImageSet = {
+    webp: "", // WebP is now provided by the API, so static version is removed.
+    original: "https://i.ibb.co/fYCg9Lh8/3.png"
+};
+
 const LoadingSpinner: React.FC = () => {
   return (
     <motion.div
@@ -12,20 +17,24 @@ const LoadingSpinner: React.FC = () => {
       aria-live="polite"
       aria-busy="true"
     >
-      <motion.img
-        src="https://i.ibb.co/fYCg9Lh8/3.png"
-        alt="Banaya Horizon Logo - Loading"
-        className="h-[100px] w-auto"
-        aria-label="Loading..."
-        animate={{
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-          duration: 2,
-          ease: "easeInOut",
-          repeat: Infinity,
-        }}
-      />
+      <motion.picture
+          animate={{
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
+      >
+        {logoImageSet.webp && <source srcSet={logoImageSet.webp} type="image/webp" />}
+        <img
+            src={logoImageSet.original}
+            alt="Banaya Horizon Logo - Loading"
+            className="h-[100px] w-auto"
+            aria-label="Loading..."
+        />
+      </motion.picture>
     </motion.div>
   );
 };
