@@ -150,7 +150,7 @@ const OurWork: React.FC<OurWorkProps> = ({ logoSet, ourProjects = [] }) => {
                                 <img
                                     src={project.link_photo_set.original}
                                     alt={getCategoryName(project.define)}
-                                    className="w-full h-full object-cover slide-image"
+                                    className="w-full h-full object-cover slide-image image-color-enhance"
                                     loading="lazy"
                                 />
                             </picture>

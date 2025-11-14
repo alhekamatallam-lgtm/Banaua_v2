@@ -61,7 +61,7 @@ const Hero: React.FC<HeroProps> = ({ heroData }) => {
             <img
               src={imageSetToUse.original}
               alt="Modern Architecture"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover image-color-enhance"
             />
         </picture>
         <div className="absolute inset-0 bg-black/15"></div>

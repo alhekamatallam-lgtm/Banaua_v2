@@ -123,17 +123,19 @@ const App: React.FC = () => {
         
         if (result.success) {
           
-          // Process projects with robust WebP logic
+          // Process projects with robust WebP logic that prioritizes quality
           const projectsFromApi = (result.data.Our_Projects || []).map((item: OurProjectItemFromAPI) => {
-              // The primary URL is the webp link if it exists, otherwise the original photo link.
-              // This addresses the issue where link_photo might be empty.
-              const primaryUrl = (item.link_webp && item.link_webp.trim() !== '') ? item.link_webp : item.link_photo;
+              // The original URL should be the high-quality photo.
+              // If it's missing, we fall back to the WebP URL to ensure an image is still displayed.
+              const originalUrl = item.link_photo || item.link_webp || '';
+        
+              // The WebP URL is used for optimization. If it's missing, the <picture> element
+              // will gracefully fall back to the original URL in the <img> tag.
+              const webpUrl = item.link_webp || '';
         
               return {
                   define: item.define,
-                  // We use the primary URL for both 'webp' and 'original'. The <picture> element
-                  // with type="image/webp" correctly triggers Cloudinary to serve the optimized format.
-                  link_photo_set: createImageSet(primaryUrl, primaryUrl)
+                  link_photo_set: createImageSet(originalUrl, webpUrl)
               };
           });
         
