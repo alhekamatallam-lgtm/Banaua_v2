@@ -146,7 +146,7 @@ const OurWork: React.FC<OurWorkProps> = ({ ourProjects = [], logoSet }) => {
                     </Swiper>
                 </motion.div>
             )}
-        </section>
+        </motion.section>
     );
 };
 
