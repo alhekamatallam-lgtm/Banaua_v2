@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ logoSet, contactData }) => {
       <div className="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div>
-          <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
+          <a href="/" aria-label="Banaya Horizon Home">
             {logoSet?.original ? (
                 <picture>
                   {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}

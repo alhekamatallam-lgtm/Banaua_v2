@@ -21,7 +21,7 @@ const Footer: React.FC<FooterProps> = ({ logoSet }) => {
           style={{ color: '#E9D5C0' }}
         >
           <span>©</span>
-          <a href="https://banaya.sa/" target="_blank" rel="noopener noreferrer" aria-label="Visit Banaya Horizon Website">
+          <a href="/" aria-label="Banaya Horizon Home">
             {logoSet?.original ? (
               <picture>
                 {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
