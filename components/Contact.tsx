@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -86,17 +87,73 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
         email: '',
         message: '',
     });
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [isFormTouched, setIsFormTouched] = useState(false);
+
+    const validate = (field?: string, value?: string) => {
+        const tempErrors: { [key: string]: string } = { ...errors };
+
+        const checkField = (name: string, val: string) => {
+             switch (name) {
+                case 'name':
+                    if (!val.trim()) tempErrors.name = 'الاسم الكامل مطلوب';
+                    else delete tempErrors.name;
+                    break;
+                case 'phone':
+                    if (!val.trim()) tempErrors.phone = 'رقم الجوال مطلوب';
+                    else if (!/^[0-9\s+-]+$/.test(val)) tempErrors.phone = 'الرجاء إدخال رقم جوال صحيح';
+                    else delete tempErrors.phone;
+                    break;
+                case 'email':
+                    if (!val.trim()) tempErrors.email = 'البريد الإلكتروني مطلوب';
+                    else if (!/\S+@\S+\.\S+/.test(val)) tempErrors.email = 'صيغة البريد الإلكتروني غير صحيحة';
+                    else delete tempErrors.email;
+                    break;
+                case 'message':
+                    if (!val.trim()) tempErrors.message = 'الرسالة مطلوبة';
+                    else delete tempErrors.message;
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        if (field && value !== undefined) {
+            checkField(field, value);
+        } else {
+            Object.keys(formData).forEach(key => {
+                checkField(key, formData[key as keyof typeof formData]);
+            });
+        }
+        
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prevState => ({ ...prevState, [name]: value }));
+        if (isFormTouched) {
+           validate(name, value);
+        }
+    };
+    
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        if (!isFormTouched) setIsFormTouched(true);
+        const { name, value } = e.target;
+        validate(name, value);
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsFormTouched(true);
+        if (!validate()) {
+            return;
+        }
+        
         setIsSubmitting(true);
         setSubmitStatus('idle');
 
@@ -119,6 +176,7 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
             if (response.ok) {
                 setSubmitStatus('success');
                 setFormData({ name: '', phone: '', email: '', message: '' });
+                setIsFormTouched(false);
             } else {
                 throw new Error('Form submission failed');
             }
@@ -232,8 +290,8 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                         className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg"
                         noValidate
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            <div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8 mb-8">
+                            <div className="relative">
                                 <label htmlFor="name" className="block text-right mb-2 font-semibold text-gray-700">
                                     الاسم الكامل
                                 </label>
@@ -243,11 +301,15 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                    onBlur={handleBlur}
+                                    className={`w-full px-4 py-3 bg-gray-50 rounded-lg border transition-all duration-300 ${errors.name ? 'border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400' : 'border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641]'}`}
                                     required
+                                    aria-invalid={!!errors.name}
+                                    aria-describedby="name-error"
                                 />
+                                {errors.name && <p id="name-error" className="text-red-600 text-sm mt-1">{errors.name}</p>}
                             </div>
-                            <div>
+                            <div className="relative">
                                 <label htmlFor="phone" className="block text-right mb-2 font-semibold text-gray-700">
                                     رقم الجوال
                                 </label>
@@ -257,12 +319,16 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                                     name="phone"
                                     value={formData.phone}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                    onBlur={handleBlur}
+                                    className={`w-full px-4 py-3 bg-gray-50 rounded-lg border transition-all duration-300 ${errors.phone ? 'border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400' : 'border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641]'}`}
                                     required
+                                    aria-invalid={!!errors.phone}
+                                    aria-describedby="phone-error"
                                 />
+                                {errors.phone && <p id="phone-error" className="text-red-600 text-sm mt-1">{errors.phone}</p>}
                             </div>
                         </div>
-                        <div className="mb-6">
+                        <div className="relative mb-8">
                             <label htmlFor="email" className="block text-right mb-2 font-semibold text-gray-700">
                                 البريد الإلكتروني
                             </label>
@@ -272,11 +338,15 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300"
+                                onBlur={handleBlur}
+                                className={`w-full px-4 py-3 bg-gray-50 rounded-lg border transition-all duration-300 ${errors.email ? 'border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400' : 'border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641]'}`}
                                 required
+                                aria-invalid={!!errors.email}
+                                aria-describedby="email-error"
                             />
+                            {errors.email && <p id="email-error" className="text-red-600 text-sm mt-1">{errors.email}</p>}
                         </div>
-                        <div className="mb-8">
+                        <div className="relative mb-8">
                             <label htmlFor="message" className="block text-right mb-2 font-semibold text-gray-700">
                                 كيف يمكننا مساعدتك؟
                             </label>
@@ -286,9 +356,13 @@ const Contact: React.FC<ContactProps> = ({ contactData }) => {
                                 rows={5}
                                 value={formData.message}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641] transition-all duration-300 resize-none"
+                                onBlur={handleBlur}
+                                className={`w-full px-4 py-3 bg-gray-50 rounded-lg border transition-all duration-300 resize-none ${errors.message ? 'border-red-500 focus:outline-none focus:ring-2 focus:ring-red-400' : 'border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9A6641]'}`}
                                 required
+                                aria-invalid={!!errors.message}
+                                aria-describedby="message-error"
                             ></textarea>
+                            {errors.message && <p id="message-error" className="text-red-600 text-sm mt-1">{errors.message}</p>}
                         </div>
                         <div>
                             <button

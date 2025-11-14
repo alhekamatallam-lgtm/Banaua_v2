@@ -1,178 +1,153 @@
-import React, { useState } from 'react';
+
+
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
-// Import Swiper modules
-import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
-import type { ImageSet } from '../App';
+import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
+import type { ProcessedOurProjectItem as OurProject, ImageSet } from '../App';
 
-// Define project interface
-interface OurProject {
-    link_photo_set: ImageSet;
-    define: "Interior design" | "Exterior design" | "Our execution";
-}
-
-// Define component props
+// --- Component Props ---
 interface OurWorkProps {
-  logoSet?: ImageSet;
   ourProjects?: OurProject[];
+  logoSet?: ImageSet;
 }
 
-// Helper function to get a more descriptive title
-const getCategoryName = (define: OurProject['define']): string => {
-    switch(define) {
-        case "Interior design": return "تصميم داخلي";
-        case "Exterior design": return "تصميم واجهة";
-        case "Our execution": return "من تنفيذنا";
-        default: return "مشروع";
-    }
-}
+type FilterType = "الكل" | "تنفيذنا" | "تصميم داخلي" | "تصاميم واجهات";
 
-const OurWork: React.FC<OurWorkProps> = ({ logoSet, ourProjects = [] }) => {
-  const [activeFilter, setActiveFilter] = useState<string>('All');
+// Mapping from Arabic filter names to English data values
+const filterMap: Record<FilterType, 'All' | OurProject['define']> = {
+    "الكل": "All",
+    "تنفيذنا": "Our execution",
+    "تصميم داخلي": "Interior design",
+    "تصاميم واجهات": "Exterior design",
+};
 
-  const filters = [
-      { label: 'الكل', value: 'All' },
-      { label: 'تنفيذنا', value: 'Our execution' },
-      { label: 'تصميم داخلي', value: 'Interior design' },
-      { label: 'تصاميم واجهات', value: 'Exterior design' },
-  ];
+const OurWork: React.FC<OurWorkProps> = ({ ourProjects = [], logoSet }) => {
+    const [activeFilter, setActiveFilter] = useState<FilterType>("تنفيذنا");
 
-  const filteredProjects = ourProjects.filter(project => {
-      if (activeFilter === 'All') return true;
-      return project.define === activeFilter;
-  });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.7, ease: 'easeOut' } },
-  };
-
-  return (
-    <>
-      {/* Custom CSS for the Ken Burns effect */}
-      <style>{`
-        .ken-burns-slider .swiper-slide .slide-image {
-          transform: scale(1);
-          transition: transform 7000ms ease-out;
+    const filteredProjects = useMemo(() => {
+        const englishFilter = filterMap[activeFilter];
+        if (englishFilter === "All") {
+            return ourProjects;
         }
-        .ken-burns-slider .swiper-slide-active .slide-image {
-          transform: scale(1.15);
-        }
-      `}</style>
-      
-      <motion.section
-        id="our-work"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={containerVariants}
-        className="pt-20 md:pt-24 bg-[#F9F7F5] overflow-hidden" // Added overflow-hidden
-      >
-        <div className="container mx-auto px-6 text-center">
-          <motion.div variants={itemVariants} className="max-w-4xl mx-auto mb-10">
-            <h2 className="section-intro-heading text-4xl md:text-5xl text-[#1A1A1A] mb-8">
-              أعمالنا
-            </h2>
-            <p className="text-xl md:text-2xl font-medium leading-relaxed text-gray-700 flex justify-center items-center flex-wrap gap-x-2">
-              <span>من الفكرة إلى التسليم..</span>
-              <span>تنفذ</span>
-              {logoSet?.original && (
-                <picture className="inline-block h-8 w-auto mx-1 align-middle -mt-1">
-                  {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
-                  <img
-                    src={logoSet.original}
-                    alt="شعار بنايا"
-                    className="h-full w-full object-contain"
-                  />
-                </picture>
-              )}
-              <span>مشاريعها بروح تُعبر عن الإبداع والفخامة.</span>
-            </p>
-          </motion.div>
+        return ourProjects.filter(p => p.define === englishFilter);
+    }, [activeFilter, ourProjects]);
 
-          {/* Filter Buttons */}
-          <motion.div 
-            variants={itemVariants}
-            className="flex justify-center items-center flex-wrap gap-3 md:gap-4 mb-12"
-          >
-            {filters.map(filter => (
-              <button
-                key={filter.value}
-                onClick={() => setActiveFilter(filter.value)}
-                className={`py-2 px-6 rounded-full font-semibold transition-all duration-300 ease-in-out text-base
-                  ${activeFilter === filter.value 
-                    ? 'bg-[#642C32] text-white shadow-md' 
-                    : 'bg-white text-[#642C32] border border-[#642C32]/30 hover:bg-[#642C32]/10'
-                  }`
-                }
-              >
-                {filter.label}
-              </button>
-            ))}
-          </motion.div>
-        </div>
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2, delayChildren: 0.2 },
+        },
+    };
 
-        {/* Full-screen Swiper Slider */}
-        <motion.div variants={itemVariants} className="w-full h-[75vh] md:h-screen">
-            <Swiper
-                key={activeFilter} // Re-initializes Swiper when filter changes
-                dir="rtl"
-                spaceBetween={0}
-                centeredSlides={true}
-                loop={filteredProjects.length > 1} // Loop only if there's more than one slide
-                effect={'fade'}
-                fadeEffect={{ crossFade: true }}
-                autoplay={{
-                delay: 7000,
-                disableOnInteraction: false,
-                }}
-                pagination={{
-                clickable: true,
-                }}
-                navigation={true}
-                modules={[Autoplay, Pagination, Navigation, EffectFade]}
-                className="w-full h-full ken-burns-slider"
-            >
-                {filteredProjects.map((project) => (
-                    <SwiperSlide key={project.link_photo_set.original}>
-                        <div className="relative w-full h-full">
-                           <picture className="w-full h-full">
-                                {project.link_photo_set.webp && <source srcSet={project.link_photo_set.webp} type="image/webp" />}
+    const itemVariants = {
+        hidden: { y: 30, opacity: 0 },
+        visible: { y: 0, opacity: 1, transition: { duration: 0.7, ease: 'easeOut' } },
+    };
+    
+    const introText = "من الفكرة إلى التسليم.. تنفذ";
+    const introTextEnd = "مشاريعها بروح تُعبر عن الإبداع والفخامة.";
+
+    const filters: FilterType[] = ["الكل", "تنفيذنا", "تصميم داخلي", "تصاميم واجهات"];
+
+    return (
+        <motion.section
+            id="our-work"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={containerVariants}
+            className="py-20 md:py-24 bg-[#F9F7F5] overflow-hidden"
+        >
+            <div className="container mx-auto px-6">
+                <motion.div variants={itemVariants} className="text-center mb-10">
+                    <h2 className="section-intro-heading text-4xl md:text-5xl text-[#1A1A1A]">
+                        أعمالنا
+                    </h2>
+                    <p className="mt-6 text-xl text-gray-700 max-w-2xl mx-auto flex justify-center items-center flex-wrap gap-x-2">
+                        <span>{introText}</span>
+                        {logoSet?.original && (
+                            <picture className="inline-block h-8 w-auto mx-1 align-middle -mt-1">
+                                {logoSet.webp && <source srcSet={logoSet.webp} type="image/webp" />}
                                 <img
-                                    src={project.link_photo_set.original}
-                                    alt={getCategoryName(project.define)}
-                                    className="w-full h-full object-cover slide-image image-color-enhance"
-                                    loading="lazy"
+                                    src={logoSet.original}
+                                    alt="شعار بنايا"
+                                    className="h-full w-full object-contain"
                                 />
                             </picture>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10"></div>
-                             <div className="absolute bottom-0 right-0 p-6 md:p-10">
-                                <motion.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.8, delay: 0.5 }}
-                                    className="bg-black/50 text-white text-xl md:text-2xl font-semibold px-5 py-3 rounded-lg backdrop-blur-sm"
-                                >
-                                    {getCategoryName(project.define)}
-                                </motion.div>
-                            </div>
-                        </div>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        </motion.div>
-      </motion.section>
-    </>
-  );
+                        )}
+                        <span>{introTextEnd}</span>
+                    </p>
+                </motion.div>
+
+                {/* Filter Buttons */}
+                <motion.div variants={itemVariants} className="flex justify-center items-center gap-x-2 md:gap-x-4 mb-12 flex-wrap">
+                    {filters.map(filter => (
+                        <button
+                            key={filter}
+                            onClick={() => setActiveFilter(filter)}
+                            className={`px-5 py-2 rounded-full text-base font-semibold transition-all duration-300 ease-in-out border-2 ${
+                                activeFilter === filter
+                                    ? 'bg-[#642C32] text-white border-[#642C32] shadow-lg'
+                                    : 'bg-white text-[#642C32] border-[#E0D5CB] hover:bg-[#F9F7F5] hover:border-[#C8B8A6]'
+                            }`}
+                        >
+                            {filter}
+                        </button>
+                    ))}
+                </motion.div>
+            </div>
+
+            {/* Swiper Slider */}
+            {ourProjects.length > 0 && (
+                <motion.div variants={itemVariants} className='w-full'>
+                    <Swiper
+                        key={activeFilter} // Re-initialize swiper on filter change to avoid bugs
+                        dir="rtl"
+                        modules={[Navigation, Pagination, Autoplay, EffectFade]}
+                        effect={'fade'}
+                        fadeEffect={{ crossFade: true }}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        centeredSlides={true}
+                        navigation
+                        pagination={{ clickable: true }}
+                        loop={filteredProjects.length > 1}
+                        autoplay={{
+                            delay: 5000,
+                            disableOnInteraction: false,
+                        }}
+                        className="w-full h-auto pb-14 ken-burns-slider"
+                    >
+                        {filteredProjects.length > 0 ? (
+                            filteredProjects.map((project, index) => (
+                                <SwiperSlide key={project.link_photo_set.original + index} className="px-4 md:px-12 lg:px-24">
+                                    <div className="aspect-video rounded-2xl overflow-hidden shadow-lg group">
+                                        <picture className="w-full h-full">
+                                            {project.link_photo_set.webp && <source srcSet={project.link_photo_set.webp} type="image/webp" />}
+                                            <img
+                                                src={project.link_photo_set.original}
+                                                alt={`مشروع بنايا ${index + 1} - ${project.define}`}
+                                                className="w-full h-full object-cover image-color-enhance transition-transform duration-500 ease-in-out group-hover:scale-105 slide-image"
+                                                loading="lazy"
+                                            />
+                                        </picture>
+                                    </div>
+                                </SwiperSlide>
+                            ))
+                        ) : (
+                            <SwiperSlide className="px-4 md:px-12 lg:px-24">
+                                <div className="aspect-video rounded-2xl bg-gray-100 flex items-center justify-center text-gray-500 text-xl font-medium border border-gray-200">
+                                    لا توجد مشاريع في هذا التصنيف حالياً.
+                                </div>
+                            </SwiperSlide>
+                        )}
+                    </Swiper>
+                </motion.div>
+            )}
+        </section>
+    );
 };
 
 export default OurWork;

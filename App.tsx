@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
@@ -13,9 +14,9 @@ import WorkAreas from './components/WorkAreas';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import LoadingSpinner from './components/LoadingSpinner';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
-// New helper function that creates an image set from the API data.
-// It prefers the pre-generated WebP URL but uses the original as a fallback.
+// Helper function that creates an image set from the API data.
 const createImageSet = (originalUrl?: string, webpUrl?: string): ImageSet => {
     if (!originalUrl || typeof originalUrl !== 'string') {
         return { webp: '', original: '' };
@@ -27,17 +28,27 @@ const createImageSet = (originalUrl?: string, webpUrl?: string): ImageSet => {
 };
 
 
-// --- Updated Interfaces ---
+// --- Interfaces ---
 export interface ImageSet {
     webp: string;
     original: string;
 }
 
-// Define interfaces for the API data structure for type safety
-interface BanauaItem {
-  description: string;
-  link: string;
-  link_webp?: string;
+// Interfaces for the NEW API data structure
+interface GalleryProjectItemFromAPI {
+    public_id: string;
+    secure_url: string;
+    webp_url: string;
+    format: string;
+    tags: "exterior" | "enterior" | "Our_Proj" | string;
+}
+
+interface HeroItemFromAPI {
+    public_id: string;
+    secure_url: string;
+    webp_url: string;
+    format: string;
+    tags: "hero";
 }
 
 interface LogoItemFromAPI {
@@ -67,39 +78,27 @@ interface ContactData {
   snapchat: string;
 }
 
-interface OurProjectItemFromAPI {
-  link_photo: string;
-  link_webp?: string;
-  define: "Interior design" | "Exterior design" | "Our execution";
-}
-
 interface ApiData {
-  Banaua: BanauaItem[];
   logo: LogoItemFromAPI[];
   about: AboutData[];
   contact: ContactData[];
-  Our_Projects: OurProjectItemFromAPI[];
+  Banaua: HeroItemFromAPI[]; // New sheet for Hero images
+  Our_Projects: GalleryProjectItemFromAPI[]; // Now only contains gallery projects
 }
 
-
-// --- Interfaces for Processed Data ---
+// Interfaces for Processed Data used by components
 interface ProcessedLogoItem {
     logoSet: ImageSet;
     areaSet?: ImageSet;
 }
 
-interface ProcessedBanauaItem {
-    description: string;
-    linkSet: ImageSet;
-}
-
-interface ProcessedOurProjectItem {
+export interface ProcessedOurProjectItem {
     link_photo_set: ImageSet;
     define: "Interior design" | "Exterior design" | "Our execution";
 }
 
 interface ProcessedApiData {
-  Banaua: ProcessedBanauaItem[];
+  hero_images: ImageSet[];
   logo: ProcessedLogoItem[];
   about: AboutData[];
   contact: ContactData[];
@@ -114,50 +113,62 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Use the new production API endpoint
-        const response = await fetch('https://script.google.com/macros/s/AKfycbznMtSB-jzE8PEZ1J5-_obRQcOTZxbDn-pglLnKLfxgFpgNhulchTquW8sxxZxJAUl4/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwAN5ePyP6cvHZUoH93XAbPUCxPc3yXI0HpENPv-3As6fPKrcImZjGo3WA4a_8I3jAj/exec');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const result: { success: boolean; data: ApiData } = await response.json();
         
         if (result.success) {
+          const apiData = result.data as any; // Use 'as any' for robust key access
+
+          // 1. Process Hero images robustly, checking for different casings
+          const heroImagesFromApi = apiData.Banaua || apiData.banaua || [];
+          const heroImages = heroImagesFromApi.map((p: HeroItemFromAPI) => createImageSet(p.secure_url, p.webp_url));
           
-          // Process projects with robust WebP logic that prioritizes quality
-          const projectsFromApi = (result.data.Our_Projects || []).map((item: OurProjectItemFromAPI) => {
-              // The original URL should be the high-quality photo.
-              // If it's missing, we fall back to the WebP URL to ensure an image is still displayed.
-              const originalUrl = item.link_photo || item.link_webp || '';
-        
-              // The WebP URL is used for optimization. If it's missing, the <picture> element
-              // will gracefully fall back to the original URL in the <img> tag.
-              const webpUrl = item.link_webp || '';
-        
-              return {
-                  define: item.define,
-                  link_photo_set: createImageSet(originalUrl, webpUrl)
-              };
-          });
-        
-          // --- Data Patch ---
-          const projectToPatch = projectsFromApi.find(p => p.link_photo_set.original.includes('i.ibb.co/w0Y8mY0/7.jpg'));
-          if (projectToPatch && projectToPatch.define === "Our execution") {
-            projectToPatch.define = "Exterior design";
+          // Helper to map new tags to old 'define' categories more robustly
+          const mapTagToDefine = (tag: string): ProcessedOurProjectItem['define'] => {
+              // Make the logic more forgiving: handle potential string issues, trim whitespace, and convert to lowercase.
+              const cleanTag = typeof tag === 'string' ? tag.trim().toLowerCase() : '';
+              switch(cleanTag) {
+                  case 'enterior': // Typo from original sheet, kept for compatibility.
+                  case 'interior':
+                      return 'Interior design';
+                  case 'exterior':
+                      return 'Exterior design';
+                  case 'our_proj':
+                      return 'Our execution';
+                  default:
+                      // CRUCIAL FALLBACK: If an image is in the 'Our_Projects' sheet but has an unrecognized or missing tag,
+                      // we will assume it's a project and display it, instead of hiding it.
+                      return 'Our execution';
+              }
           }
-          // --- End of Patch ---
+
+          // 2. Process Gallery projects robustly with the new forgiving logic
+          const galleryProjectsFromApi = apiData.Our_Projects || apiData.our_projects || [];
+          const galleryProjects = galleryProjectsFromApi
+            .map((p: GalleryProjectItemFromAPI) => {
+                // Skip any entries that are malformed or missing a URL
+                if (!p || !p.secure_url) return null;
+
+                return {
+                    link_photo_set: createImageSet(p.secure_url, p.webp_url),
+                    define: mapTagToDefine(p.tags) // This will now always return a valid category
+                };
+            })
+            .filter((p): p is ProcessedOurProjectItem => p !== null); // Filter out any null (malformed) entries
+
 
           const processedData: ProcessedApiData = {
-              logo: (result.data.logo || []).map((item: LogoItemFromAPI) => ({
+              hero_images: heroImages,
+              our_projects: galleryProjects,
+              logo: (apiData.logo || []).map((item: LogoItemFromAPI) => ({
                 logoSet: createImageSet(item.logo, item.logo_webp),
                 areaSet: item.area ? createImageSet(item.area, item.area_webp) : undefined,
               })),
-              about: result.data.about,
-              contact: result.data.contact,
-              Banaua: (result.data.Banaua || []).map((item: BanauaItem) => ({
-                  description: item.description,
-                  linkSet: createImageSet(item.link, item.link_webp)
-              })),
-              our_projects: projectsFromApi,
+              about: apiData.about || [],
+              contact: apiData.contact || [],
           };
           
           setData(processedData);
@@ -183,8 +194,6 @@ const App: React.FC = () => {
     return <div className="h-screen w-full flex items-center justify-center bg-[#F9F7F5] text-red-500 text-xl">حدث خطأ: {error}</div>;
   }
   
-  const heroData = data?.Banaua[0];
-
   return (
     <>
       <AnimatePresence>
@@ -193,19 +202,20 @@ const App: React.FC = () => {
 
       {data && (
         <div className="bg-[#F9F7F5] text-[#1A1A1A] antialiased">
-          <Header logoSet={data.logo[0]?.logoSet} contactData={data.contact[0]} />
+          <Header logoSet={data.logo?.[0]?.logoSet} contactData={data.contact?.[0]} />
           <main>
-            <Hero heroData={heroData} />
-            {data.about && data.logo && <About aboutData={data.about[0]} logoSet={data.logo[0]?.logoSet} />}
-            {data.about && data.logo && <VisionMission aboutData={data.about[0]} logoSet={data.logo[0]?.logoSet} />}
+            <Hero heroImages={data.hero_images} />
+            {data.about?.[0] && data.logo?.[0] && <About aboutData={data.about[0]} logoSet={data.logo[0]?.logoSet} />}
+            {data.about?.[0] && data.logo?.[0] && <VisionMission aboutData={data.about[0]} logoSet={data.logo[0]?.logoSet} />}
             <Fields />
             <Advantages />
-            <OurWork logoSet={data.logo[0]?.logoSet} ourProjects={data.our_projects} />
+            <OurWork logoSet={data.logo?.[0]?.logoSet} ourProjects={data.our_projects} />
             <Stats />
-            <WorkAreas logoSet={data.logo[0]?.logoSet} areaImageSet={data.logo[0]?.areaSet} />
-            {data.contact && <Contact contactData={data.contact[0]} />}
+            <WorkAreas logoSet={data.logo?.[0]?.logoSet} areaImageSet={data.logo?.[0]?.areaSet} />
+            {data.contact?.[0] && <Contact contactData={data.contact[0]} />}
           </main>
-          <Footer logoSet={data.logo[0]?.logoSet} />
+          <Footer logoSet={data.logo?.[0]?.logoSet} />
+          <ScrollToTopButton />
         </div>
       )}
     </>

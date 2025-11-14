@@ -145,6 +145,15 @@
       opacity: 1;
     }
 
+    /* Ken Burns Effect for Swiper */
+    .ken-burns-slider .swiper-slide .slide-image {
+      transform: scale(1.15);
+      transition: transform 8000ms ease-out;
+    }
+    .ken-burns-slider .swiper-slide-active .slide-image {
+      transform: scale(1);
+    }
+
     /* Additional configuration for Tailwind */
     tailwind.config = {
       theme: {
@@ -172,7 +181,8 @@
     "swiper/": "https://aistudiocdn.com/swiper@^12.0.3/",
     "fs": "https://aistudiocdn.com/fs@^0.0.1-security",
     "node-fetch": "https://aistudiocdn.com/node-fetch@^3.3.2",
-    "sharp": "https://aistudiocdn.com/sharp@^0.34.5"
+    "sharp": "https://aistudiocdn.com/sharp@^0.34.5",
+    "swiper": "https://aistudiocdn.com/swiper@^12.0.3"
   }
 }
 </script>
